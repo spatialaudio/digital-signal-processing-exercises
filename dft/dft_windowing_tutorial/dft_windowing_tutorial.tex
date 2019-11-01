@@ -240,7 +240,7 @@ W^{1 \cdot 0} & W^{1 \cdot 1} & W^{1 \cdot 2} & \cdots & W^{1 \cdot (N-1)}\\
 W^{2 \cdot 0} & W^{2 \cdot 1} & W^{2 \cdot 2} & \cdots & W^{2 \cdot (N-1)}\\
 \vdots & & \cdots& & \vdots\\
 W^{(N-1) \cdot 0} & W^{(N-1) \cdot 1} & W^{(N-1) \cdot 2} & \cdots & W^{(N-1)(N-1)}\\
-\end{bmatrix} \cdot
+\end{bmatrix} \,
 \begin{bmatrix}
 x[k=0]\\
 x[k=1]\\
@@ -251,8 +251,12 @@ x[k=N-1]
 \end{equation}
 shortly as
 \begin{equation}
-\mathbf{X}_{N \times 1} = \mathbf{W}_{N \times N} \cdot \mathbf{x}_{N \times 1}.
+\mathbf{X}_{N \times 1} = \mathbf{W}_{N \times N} \, \mathbf{x}_{N \times 1}.
 \end{equation}
+Note that linear algebra typical notates matrices with uppercase letters and vectors
+with lowercase letters. Common signal processing convention uses lowercase letters for
+signals and uppercase letters for spectrum. Following the latter $\mathbf{X}$ is
+not a matrix, but a vector containing the DFT spectrum.
 
 The inverse of the DFT matrix reads
 \begin{equation}
@@ -270,7 +274,7 @@ in the exp() of twiddle factor.
 %
 If the matrices are normalized, such that
 \begin{equation}
-(\frac{1}{\sqrt{N}} \mathbf{W}^\mathrm{H}) \cdot (\frac{1}{\sqrt{N}} \mathbf{W}) = \mathbf{I}
+(\frac{1}{\sqrt{N}} \mathbf{W}^\mathrm{H}) \, (\frac{1}{\sqrt{N}} \mathbf{W}) = \mathbf{I}
 \end{equation}
 then they are unitary, i.e. the complex conjugate transpose of the complex
 square matrix is at the same time the inverse.
@@ -286,8 +290,8 @@ which precisely corresponds to \eqref{eq:IDFT}.
 Furthermore, analysis (DFT) and subsequent synthesis (IDFT) yields the input
 vector again, such as
 \begin{equation}
-\mathbf{x} = \frac{1}{N}\mathbf{W}^* \cdot (\mathbf{W} \mathbf{x}) =
-(\frac{1}{N}\mathbf{W}^* \cdot \mathbf{W}) \mathbf{x} = \mathbf{x},
+\mathbf{x} = \frac{1}{N}\mathbf{W}^* \, (\mathbf{W} \mathbf{x}) =
+(\frac{1}{N}\mathbf{W}^* \, \mathbf{W}) \mathbf{x} = \mathbf{x},
 \end{equation}
 due to $\frac{1}{N}\mathbf{W}^* \mathbf{W} = \mathbf{I}$.
 This is identical to the statement \eqref{eq:x_idft_dft_x}.
