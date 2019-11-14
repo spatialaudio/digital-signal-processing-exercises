@@ -1,5 +1,7 @@
 *-checkpoint.ipynb
 dft/SlepianWindow
+.idea
+dft/matplotlibrc
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
