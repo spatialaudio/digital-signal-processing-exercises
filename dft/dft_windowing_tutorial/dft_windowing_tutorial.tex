@@ -1351,7 +1351,8 @@ The Hamming window adds these zeros again to the Hanning window spectrum in
 order to improve the attenuation of the first side lobes (left and right of
 the main lobe).
 %
-To that end, the Hanning window spectrum is modified with a factor $\beta$:
+To that end, the Hanning window spectrum is modified with a factor $\beta$ (cf.
+\cite[Ch. 3.10]{Rabiner1975}):
 %
 \begin{equation}
 W_{\text{Hamm}}(\Omega)=\e^{-\im\frac{\Omega(N-1)}{2}}\cdot\left(\frac{\sin\left(\frac{N}{2}\Omega\right)}{\sin\left(\frac{1}{2}\Omega\right)}+\frac{\beta}{2}\cdot\frac{\sin\left(\frac{N}{2}\left(\Omega-\frac{2\pi}{N}\right)\right)}{\sin\left(\frac{1}{2}\left(\Omega-\frac{2\pi}{N}\right)\right)}+\frac{\beta}{2}\cdot\frac{\sin\left(\frac{N}{2}\left(\Omega+\frac{2\pi}{N}\right)\right)}{\sin\left(\frac{1}{2}\left(\Omega+\frac{2\pi}{N}\right)\right)}\right).
