@@ -5,10 +5,10 @@ These exercise accompany the lectures
 
 https://github.com/spatialaudio/digital-signal-processing-lecture
 
-The project is currently under heavy development while adding new material for the winter term 2019/20.
+The project is currently under heavy development while adding new material for the winter term 2020/21.
 
 The [output branch](https://github.com/spatialaudio/digital-signal-processing-exercises/tree/outputs) contains executed notebooks with results and plots, whereas the master branch
-contains no outputs at all for convenient diff while developing.
+contains no outputs for convenient diff debugging.
 
 ## License
 
