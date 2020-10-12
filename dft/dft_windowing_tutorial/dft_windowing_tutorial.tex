@@ -1,19 +1,65 @@
 \documentclass[11pt,a4paper,DIV=12]{scrartcl}
+\usepackage{scrlayer-scrpage}
 \usepackage[utf8]{inputenc}
+\usepackage{fouriernc}
 \usepackage[T1]{fontenc}
 \usepackage[english]{babel}
 \usepackage[hidelinks]{hyperref}
-\usepackage{framed}
-\usepackage{color}
-\usepackage{enumitem}
+\usepackage{natbib}
+\usepackage{url}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{trfsigns}
+\usepackage{marvosym}
+\usepackage{nicefrac}
+\usepackage{enumitem}
 \usepackage{graphicx}
-\usepackage{subfig}
-\newcommand{\red}{\textcolor{red}}
+\usepackage{subcaption}
+%\usepackage{subfig}
+\usepackage{xcolor}
 \usepackage{comment}
+\usepackage{framed}
+\usepackage{tikz}
+%\usepackage{circuitikz}
+%\usepackage{pgfplots}
+\usepackage{bm}
+
+%matplotlib colors:
+\definecolor{C0}{HTML}{1f77b4}
+\definecolor{C1}{HTML}{ff7f0e}
+\definecolor{C2}{HTML}{2ca02c}
+\definecolor{C3}{HTML}{d62728}
+\definecolor{C7}{HTML}{7f7f7f}
+
+\newcommand{\mydft}{\mbox{\setlength{\unitlength}{0.1em}%
+                            \begin{picture}(20,10)%
+                              \put(2,3){\circle{4}}%
+                              \put(4,3){\line(1,0){4.75}}%
+                              \multiput(8.625,3.15)(0.25,0.25){11}{%
+                                \makebox(0,0){\rmfamily\tiny .}}%
+                              \put(17,3){\line(-1,0){5.75}}%
+                              %\put(18,3){\circle*{4}}%
+                              \put(6,-4){\scriptsize $N$}
+                            \end{picture}%
+                           }
+                      }
+
+\newcommand{\myDFT}{\mbox{\setlength{\unitlength}{0.1em}%
+                            \begin{picture}(20,10)%
+                              %\put(2,3){\circle*{4}}%
+                              \put(3,3){\line(1,0){5.75}}%
+                              \multiput(11.375,3.15)(-0.25,0.25){11}{%
+                                \makebox(0,0){\rmfamily\tiny .}}%
+                              \put(16,3){\line(-1,0){4.75}}%
+                              \put(18,3){\circle{4}}%
+                              \put(6,-4){\scriptsize $N$}
+                            \end{picture}%
+                           }
+                      }
+
+\bibliographystyle{abbrvnat}
+\newcommand{\red}{\textcolor{red}}
 \specialcomment{Loesung}{\begin{framed}\noindent}{\end{framed}\noindent}
 %\excludecomment{Loesung}
 
@@ -25,171 +71,271 @@ Institute of Communications Engineering (INT)\\
 Faculty of Computer Science and Electrical Engineering (IEF)\\
 University of Rostock, Germany\\}
 \vspace{0.5cm}
-\noindent This tutorial is provided as Open Educational Resource, to be found at\\
+\noindent This tutorial is provided as Open Educational Resource (OER),
+to be found at\\
 \url{https://github.com/spatialaudio/digital-signal-processing-exercises}\\
 accompanying the DSP lecture\\
 \url{https://github.com/spatialaudio/digital-signal-processing-lecture}\\
-Both are licensed under the Creative Commons Attribution 4.0 International
-License for text/graphics and under the MIT License for software. Please
-attribute this work as \textit{Frank Schultz, Digital Signal Processing - A
-Tutorial Featuring Computational Examples} with the github URL.
+Both OERs are licensed under i) the Creative Commons Attribution 4.0 International
+License for text and graphics and ii) under the MIT License for software.
+%
+Please attribute this special work as
+\textit{Frank Schultz, Digital Signal Processing - A
+Tutorial Featuring Computational Examples, Spectral Analysis of Deterministic,
+Discrete-Time Signals} with the github URL.
 \newline
 
-\textbf{Digital Signal Processing Tutorial 1 \& 2, Winter Semester 2019/20}
-(Course \#24505)
-authors: Frank Schultz (concept, initial draft, OER ready),
-Vera Erbes (proof reading and validation, translation from German to English)\\
+\textbf{Digital Signal Processing Tutorial 1 \& 2, Winter Semester 2020/21}
+(Course \#24505)\\
+authors: Frank Schultz (concept, initial draft, OER version),
+Vera Erbes (proof read, validation, translation from German to English)\\
 Feel free to contact frank.schultz@uni-rostock.de.
 
 %------------------------------------------------------------------------------
-\section*{\underline{Spectral Analysis of Deterministic Signals}}
+\section*{\underline{Spectral Analysis of Deterministic, Discrete-Time Signals}}
 \renewcommand{\contentsname}{}
 \tableofcontents
 \vspace{.7cm}
 
-\clearpage
-\section{DFT}
+%\clearpage
+\section{Discrete Fourier Transform (DFT)}
 Why just another DFT tutorial? Well, this is a collection of calculus,
-graphs and exercises that the authors found most useful for teaching purposes
-in the last decade.
-The graphs and the didactical approach following \cite{Moeser2011} might be
-a way of DFT storytelling that is rarely found in classic textbooks
-and deserve survival.
+graphs and exercises that the authors found useful for teaching purposes
+and which evolved over the last decade.
+%
+The didactical approach follows \cite{Rabiner1975}, \cite{Kammeyer2002},
+\cite{Moeser2011}.
+%
+Furthermore, a compact link to linear algebra fundamentals seems to be
+reasonable, since (statistical) signal processing, such as machine learning,
+heavily relies on matrix algebra. For that, \cite{Strang2019} is a brilliant
+resource.
 
 % ---------------------------------------------------------------------------------
-\subsection{DFT Definitions}
-The discrete Fourier transform (DFT, often interpreted as signal analysis) and
-its counterpart the inverse DFT (IDFT, often interpreted as signal synthesis)
-are defined as \cite[eq.~(8.11) and (8.12)]{Oppenheim2010}
+\subsection{DFT Definition Conventions}
+The discrete Fourier transform (DFT, often interpreted as the signal analysis
+stage) and
+its counterpart, i.e. the inverse DFT (IDFT, often interpreted as the signal
+synthesis stage)
+are defined as
+\begin{framed}
+%
 \begin{equation}
-X[\mu]=\sum_{k=0}^{N-1}x[k]\cdot W_N^{k\mu} \hspace{2cm}
-x[k]=\frac{1}{N}\sum_{\mu=0}^{N-1}X[\mu]\cdot W_N^{-k\mu}
+X[\mu]=\sum_{k=0}^{N-1}x[k]\cdot W_N^{-k\mu} \hspace{2cm}
+x[k]=\frac{1}{N}\sum_{\mu=0}^{N-1}X[\mu]\cdot W_N^{+k\mu}
 \end{equation}
 using the so-called twiddle factor or DFT kernel
 \begin{equation}
-W_N=\e^{-\im\frac{2\pi}{N}}
+W_N=\e^{+\im\frac{2\pi}{N}}
 \end{equation}
+%
 relating an $N$ samples discrete-time signal $x[k]$ and its $N$ coefficients
-(also called bins) discrete-frequency DFT spectrum $X[\mu]$.
+(also called DFT bins) discrete-frequency DFT spectrum $X[\mu]$.
+%
+We might use the operator notation
+\begin{align}
+\text{DFT: }x[k] &\quad\mydft\quad X[\mu]\\
+\text{IDFT: }X[\mu] &\quad\myDFT\quad x[k].
+\end{align}
+%
+\end{framed}
 %
 In general, the DFT/IDFT supports $x[k]\in \mathbb{C}$ and
 $X[\mu]\in \mathbb{C}$.
 %
 Later, some useful relations will be obtained when assuming
 $x[k]\in\mathbb{R}$.
-
-In the literature, the DFT/IDFT pair may be differently defined, such as e.g.
+%
+In the literature, the DFT pair may be differently defined, such as e.g.
 \begin{align}
-&X[\mu]=\underbrace{{\frac{1}{N}}}_{K_\text{DFT}}\sum_{n=0}^{N-1}x[k]\cdot W_N^{k\mu}
-\,\laplace\hspace{2cm}
-x[k]=\underbrace{{1}}_{K_\text{IDFT}}\cdot\sum_{\mu=0}^{N-1}X[\mu]\cdot W_N^{-k\mu}\\
-&X[\mu]=\underbrace{{\frac{1}{\sqrt{N}}}}_{K_\text{DFT}}\sum_{n=0}^{N-1}x[k]\cdot W_N^{k\mu}
-\,\laplace\hspace{2cm}
-x[k]=\underbrace{{\frac{1}{\sqrt{N}}}}_{K_\text{IDFT}}\sum_{\mu=0}^{N-1}X[\mu]\cdot W_N^{-k\mu},
+&X[\mu]=\underbrace{{\frac{1}{N}}}_{K_\text{DFT}}\sum_{n=0}^{N-1}x[k]\cdot W_N^{-k\mu}
+\hspace{1cm}\mydft\hspace{1cm}
+x[k]=\underbrace{{1}}_{K_\text{IDFT}}\sum_{\mu=0}^{N-1}X[\mu]\cdot W_N^{+k\mu}\\
+&X[\mu]=\underbrace{{\frac{1}{\sqrt{N}}}}_{K_\text{DFT}}\sum_{n=0}^{N-1}x[k]\cdot W_N^{-k\mu}
+\hspace{1cm}\myDFT\hspace{1cm}
+x[k]=\underbrace{{\frac{1}{\sqrt{N}}}}_{K_\text{IDFT}}\sum_{\mu=0}^{N-1}X[\mu]\cdot W_N^{+k\mu},
 \label{eq:orthonorm}
 \end{align}
-where different normalisation schemes are applied.
+where different normalisation schemes of the sum are applied.
 %
-However, a valid DFT/IDFT-pair must always fulfill
+In any case a valid DFT pair must fulfill
 \begin{align}
 K=K_{\text{IDFT}}\cdot K_{\text{DFT}}=\frac{1}{N},
 \end{align}
-so that
+such that
 \begin{align}
-x[k]&=\text{IDFT}\left\{\text{DFT}\left\{x[k]\right\}\right\}
+x[k]&=\text{IDFT}_N\left\{\text{DFT}_N\left\{x[k]\right\}\right\}
 \label{eq:x_idft_dft_x}
 \\
-X[\mu]&=\text{DFT}\left\{\text{IDFT}\left\{X[\mu]\right\}\right\}
+X[\mu]&=\text{DFT}_N\left\{\text{IDFT}_N\left\{X[\mu]\right\}\right\}.
 \label{eq:X_dft_idft_X}
 \end{align}
-holds.
 %
-Hence, either $K_{\text{IDFT}}$ or $K_{\text{DFT}}$ can be chosen according to
-the specific application and then the other parameter is determined by $K$.
+Hence, either the factor $K_{\text{IDFT}}$ or the factor $K_{\text{DFT}}$
+can be chosen according to
+the specific application and then the other parameter is determined due to
+$K=\frac{1}{N}$.
 %
-Another convention is related to the sign of exp() in the twiddle factor.
+Another convention is related to the sign of the exp() function in the twiddle
+factor:
 %
-This may also be defined as
+this may also be defined as, cf. \cite{Oppenheim2010},
 \begin{equation}
-W_N=\e^{\red{+}\im\frac{2\pi}{N}}
+W_N=\e^{-\im\frac{2\pi}{N}}
 \end{equation}
-if required for specific applications.
+if required for specific applications, so we should pay attention to this tiny detail.
 %
 Note that the DFT/IDFT equations do not care about signal interpretation, they
-transform a vector to another vector.
+just transform a vector/signal to another vector/signal;
+proper interpretation is up to the user.
 %
-The general definition of the DFT/IDFT-pair is thus given as
+The general definition of the DFT pair may thus given as
 \begin{equation}
-X[\mu]=K_\text{DFT}\sum_{k=0}^{N-1}x[k]\cdot W_N^{\pm k\mu}
+X[\mu]=K_\text{DFT}\sum_{k=0}^{N-1}x[k]\cdot W_N^{\mp k\mu}
 \hspace{2cm}
-x[k]=K_\text{IDFT}\sum_{\mu=0}^{N-1}X[\mu]\cdot W_N^{\mp k\mu}
+x[k]=K_\text{IDFT}\sum_{\mu=0}^{N-1}X[\mu]\cdot W_N^{\pm k\mu}
 \end{equation}
 using
 \begin{equation}
-W_N=\e^{-\im\frac{2\pi}{N}},
+W_N=(\e^{+\im\frac{2\pi}{N}}),
 \hspace{1cm}
 K_\text{IDFT}\cdot K_\text{DFT}=\frac{1}{N}.
 \end{equation}
 %
-In the majority of DSP-related books and software the DFT/IDFT pair is defined
-as
+\begin{framed}
+%
+Fortunately, the majority of DSP-related books and software packages consistently
+define the DFT pair with the following conventions
 \begin{align}
-X[\mu]=&\sum_{k=0}^{N-1}x[k]\cdot\e^{-\im\frac{2\pi}{N}k\mu}
+X[\mu] = \mathrm{DFT}_N\{x[k]\} = &\sum_{k=0}^{N-1} x[k] \, (\e^{-\im\frac{2\pi}{N}})^{k \cdot \mu}
 \hspace{0.5cm}
-\text{Python numpy \texttt{X=np.fft.fft(x)}, Matlab: \texttt{X=fft(x)}}
+\text{numpy: \texttt{X=np.fft.fft(x)}, Matlab: \texttt{X=fft(x)}}
 \label{eq:DFT}\\
-x[k]=\frac{1}{N}&\sum_{\mu=0}^{N-1}X[\mu]\cdot\e^{+\im\frac{2\pi}{N}k\mu}
+x[k] = \mathrm{IDFT}_N\{X[\mu]\} = \frac{1}{N} &\sum_{\mu=0}^{N-1} X[\mu] \, (\e^{+\im\frac{2\pi}{N}})^{k \cdot \mu}
 \hspace{0.4cm}
-\text{Python numpy \texttt{x=np.fft.ifft(X)}, Matlab: \texttt{x=ifft(X)}}
+\text{numpy: \texttt{x=np.fft.ifft(X)}, Matlab: \texttt{x=ifft(X)}}
 \label{eq:IDFT}
 \end{align}
-which will also be used throughout the lecture and the tutorial.
+which will also be used throughout the DSP lecture and tutorial.
+%
+\end{framed}
 %
 This convention implies that positive constant group delays in the DFT spectrum
 $X$ are interpreted as causal signal delays for $x$.
 
-The discrete-time Fourier transform (DTFT) pair
+\subsection{Discrete-Time Fourier Transform (DTFT)}
+The DTFT pair using the continuous discrete-time
+frequency variable $\Omega$
 \begin{align}
-X(\Omega)=&\sum_{k=-\infty}^\infty x[k]\cdot\e^{-\im\Omega k}
+X(\Omega)=&\sum_{k=-\infty}^\infty x[k]\,\e^{-\im\Omega k}
 \label{eq:DTFT}\\
-x[k]=\frac{1}{2\pi}&\int\limits_{-\pi}^\pi X(\Omega)\cdot\e^{+\im\Omega k}\text{d}\Omega.
+x[k]=\frac{1}{2\pi}&\int\limits_{-\pi}^\pi X(\Omega)\,\e^{+\im\Omega k}\text{d}\Omega
 \end{align}
-is defined with the same signs in the exp() and the prefactor $\frac{1}{2\pi}$
+is defined with the same signs in the exp() function
+and the prefactor $\frac{1}{2\pi}$
 belonging to the synthesis equation in the same way as for the used definition
 of the DFT pair.
 
 % -----------------------------------------------------------------------------
-\subsection{Matrix Notation and Use of Linear Algebra Fundamentals}
-The DFT is a classic application for a fundamental linear algebra problem, i.e.
+\subsection{Link to Linear Algebra}
+The DFT is basically a fundamental linear algebra problem, i.e.
 solving a set of linear equations, or in another train of thought: transferring
 one vector to another vector in hope for more convenient data representation,
-such as here for spectrum analysis.
+such as here for spectrum analysis and signal synthesis.
 %
-And of course it is not pure hope which helps us, but the appropriate choice
-of a vector base that (approximately) solves our problem.
+Of course it is not pure hope which helps us performing these tasks, but
+a very appropriate and intended choice of a vector base that solves our problem.
 %
-It is thus worth to grasp these links for an in-depth understanding.
+This vector base is probably one of the most beautiful in linear algebra,
+in any case it is one the most important ones.
+%
+Therefore, it is worth to grasp these linear algebra links for an in-depth
+understanding of the DFT.
+%
+\cite{Strang2019} is highly recommended lecture for further reading.
 
-The DFT of length $N$ is a brilliant example for a special base of orthogonal
-vectors that are set up from the roots of the $z^N=1$ equation, i.e.
-equiangularly distributed locations along the unit circle within the complex
-plane, cf. Fig.~\ref{DFT_Eigenfrequenzen_N4_N5}.
+\subsubsection{Roots on the Unit Circle}
+
+The DFT of length $N$ is an excellent example for a special
+base of orthogonal vectors whose entries are set up from the roots of the $z^N=1$
+equation, i.e. equiangularly distributed locations along the unit circle
+within the complex $z$-plane, cf. Fig.~\ref{fig:DFT_UnitCircle}.
 %
-To build these vectors, let us recall the twiddle factor
-\begin{equation}
-W=\e^{-\im\frac{2\pi}{N}},
-\end{equation}
-here omitting the $N$ subscript to avoid confusion with the following subscripts
-that indicate matrix and vector dimensions.
+\begin{figure}[b]
+\center
+\begin{tikzpicture}[scale=1.5]
+\def \tic {0.05}
 %
-Now, by inspecting the DFT analysis equation \eqref{eq:DFT} one might figure
-what pairs of $k$ and $\mu$ are required and bring them into a certain sequence,
-namely putting them into an appropriate matrix.
+\begin{scope}
+\draw[C3, thick] (0,0) circle(1);  % unit circle, i.e. DTFT domain
+\draw[C3] (0.78,-0.78) node[right]{DTFT $z=\e^{\im\Omega}$};
+\draw[C0] (0.78,-1.15) node[right]{DFT $z_\mu = \e^{\im\frac{2\pi}{4}\mu}$};
 %
-This so called DFT matrix $\mathbf{W}_{N \times N}$ can be built from the
-outer product (note the symmetry)
-\begin{equation*}
-\mathbf{A}_{N \times N} =
+\draw (1+2*\tic,-3*\tic) node{$1$}; % indicate that this is the unit circle
+\draw[->] (-1.25,0)--(1.75,0) node[right]{$\Re\{z\}$}; % axis label
+\draw[->] (0,-1.25)--(0,1.5) node[above]{$\Im\{z\}$}; % axis label
+%
+\draw[C0, ultra thick] (0,+1) node{\Huge $\circ$};
+\draw[C0, ultra thick] (0,-1) node{\Huge $\circ$};
+\draw[C0, ultra thick] (+1,0) node{\Huge $\circ$};
+\draw[C0, ultra thick] (-1,0) node{\Huge $\circ$};
+%
+\draw[] (+1+1*\tic,4*\tic) node[right]{$z_0=1$};
+\draw[] (2*\tic,+1+4*\tic) node[right]{$z_1=W_4=\e^{\im\frac{2\pi}{4}}$};
+\draw[] (-1+4*\tic,4*\tic) node{$z_2$};
+\draw[] (4*\tic,-1+4*\tic) node{$z_3$};
+%
+\draw[->] (0.25,0) node[above]{$\frac{2\pi}{4}$} arc (0:90:0.25) ;
+%
+\draw[] (0,2.25) node{Solutions for $z^4 = 1$, $N=4$ DFT};
+\end{scope}
+%
+\begin{scope}[xshift=5cm]
+\draw[C3, thick] (0,0) circle(1);  % unit circle, i.e. DTFT domain
+\draw[C3] (0.78,-0.78) node[right]{DTFT $z=\e^{\im\Omega}$};
+\draw[C0] (0.78,-1.15) node[right]{DFT $z_\mu = \e^{\im\frac{2\pi}{5}\mu}$};
+%
+\draw (1+2*\tic,-3*\tic) node{$1$}; % indicate that this is the unit circle
+\draw[->] (-1.25,0)--(1.75,0) node[right]{$\Re\{z\}$}; % axis label
+\draw[->] (0,-1.25)--(0,1.5) node[above]{$\Im\{z\}$}; % axis label
+%
+\draw[white] (0,-1)--(0,+1);
+\draw[white] (-1,0)--(+1,0);
+%
+\draw[C0, ultra thick] (1,0) node{\Huge $\circ$};
+\draw[C0, ultra thick] (0.30902, 0.95106) node{\Huge $\circ$};
+\draw[C0, ultra thick] (-0.80902, 0.58779) node{\Huge $\circ$};
+\draw[C0, ultra thick] (-0.80902,- 0.58779) node{\Huge $\circ$};
+\draw[C0, ultra thick] (0.30902,- 0.95106) node{\Huge $\circ$};
+%
+\draw[] (+1+1*\tic,4*\tic) node[right]{$z_0=1$};
+\draw[] (0.30902+1*\tic, 0.95106+3*\tic) node[right]{$z_1=W_5=\e^{\im\frac{2\pi}{5}}$};
+\draw[] (-0.80902-4*\tic, 0.58779+4*\tic) node{$z_2$};
+\draw[] (-0.80902-4*\tic,- 0.58779-4*\tic) node{$z_3$};
+\draw[] (0.30902+4*\tic,- 0.95106-4*\tic) node{$z_4$};
+%
+\draw[-] (0,0) -- (1,0);
+\draw[-] (0,0) -- (0.30902, 0.95106);
+\draw[-] (0,0) -- (-0.80902, 0.58779);
+\draw[-] (0,0) -- (-0.80902,- 0.58779);
+\draw[-] (0,0) -- (0.30902,- 0.95106);
+\draw[->] (0.25,0) node[above]{$\frac{2\pi}{5}$} arc (0:72:0.25) ;
+%
+\draw[] (0,2.25) node{Solutions for $z^5 = 1$, $N=5$ DFT};
+\end{scope}
+%
+\end{tikzpicture}
+\caption{DFT frequencies (blue dots) on the unit circle (red) in the complex $z$-plane.}
+\label{fig:DFT_UnitCircle}
+\end{figure}
+%
+For a complete DFT or IDFT, cf. \eqref{eq:DFT}, \eqref{eq:IDFT}, all
+pairs $k \cdot \mu$ are required.
+%
+It is useful to create an $N \times N$ matrix from an outer product as
+%
+\begin{align}
+\bm{K} &=
 \begin{bmatrix}
 0\\
 1\\
@@ -201,117 +347,409 @@ N-1
 \cdot
 \begin{bmatrix}
 0 & 1 & 2 & 3 &\cdots & N-1
-\end{bmatrix}
-=
+\end{bmatrix}\\
+&=k \downarrow
+\substack{\rightarrow \mu\\
 \begin{bmatrix}
-0 & 0 & 0 & 0 & \cdots & 0\\
-0 & 1 & 2 & 3 & \cdots & (N-1)\\
-0 & 2 & 4 & 6 & \cdots & 2(N-1)\\
-0 & 3 & 6 & 9 & \cdots & 3(N-1)\\
-\vdots & & \cdots& & & \vdots\\
-0 & (N-1) & 2(N-1) & 3(N-1) & \cdots & (N-1)^2
+0 \cdot 0 & 0 \cdot 1 & 0 \cdot 2 & 0 \cdot 3 & \dots & 0 \cdot (N-1)\\
+1 \cdot 0 & 1 \cdot 1 & 1 \cdot 2 & 1 \cdot 3 & \dots & 1 \cdot (N-1)\\
+2 \cdot 0 & 2 \cdot 1 & 2 \cdot 2 & 2 \cdot 3 & \dots & 2 \cdot (N-1)\\
+3 \cdot 0 & 3 \cdot 1 & 3 \cdot 2 & 3 \cdot 3 & \dots & 3 \cdot (N-1)\\
+\vdots & \vdots & \vdots & \vdots & \ddots & \vdots\\
+(N-1) \cdot 0 & (N-1) \cdot 1 & (N-1) \cdot 2 & (N-1) \cdot 3 & \dots &  (N-1) \cdot (N-1)
 \end{bmatrix}
-\end{equation*}
+},
+\end{align}
+i.e. varying the time index from top to bottom and increasing the
+DFT frequency from left to right.
 %
-applying it to the twiddle factor by element-wise operation
+The complex number $z_1 = W_N = \e^{+\im\frac{2\pi}{N}}$
+from Fig.~\ref{fig:DFT_UnitCircle} is identified as the twiddle factor introduced
+beforehand.
+%
+This corresponds to the special DTFT frequency $\Omega = \frac{2\pi}{N}$.
+%
+In analogy to the Fourier series, this frequency is the first harmonic for a DFT
+of length $N$.
+%
+The entry $z_0$ obviously corresponds to the frequency $\Omega=0$.
+%
+The IDFT \eqref{eq:IDFT} precisely requires powers of the twiddle factor forming
+the different phasors
+$(W_N)^{k\cdot \mu} = (\e^{+\im\frac{2\pi}{N}})^{k\cdot \mu} = \e^{+\im\frac{2\pi}{N} (k\cdot \mu)}$.
+%
+\subsubsection{Fourier Matrix}
+%
+That is why matrix $\bm{K}$ was built before: by using element-wise operation
 %
 \begin{equation}
-\mathbf{W}_{N \times N} =
-(\e^{-\im\frac{2\pi}{N}})^\mathbf{A} =
-\e^{-\im\frac{2\pi}{N} \mathbf{A}}.
+\mathbf{W} =
+(\e^{+\im\frac{2\pi}{N}})^\mathbf{K} =
+\e^{+\im\frac{2\pi}{N} \mathbf{K}}
 \end{equation}
 %
-The reader might verify that this matrix is orthogonal
-(note that the complex dot product is required here).
+the so called
+$N \times N$ Fourier Matrix
 %
-Then, the DFT \eqref{eq:DFT} can be written in matrix notation as
-\begin{equation}
+\begin{align}
+\label{eq:FourierMatrix}
+\bm{W} =
+k \downarrow
+\substack{\rightarrow \mu\\
 \begin{bmatrix}
-X[\mu=0]\\
-X[\mu=1]\\
-X[\mu=2]\\
-\vdots\\
-X[\mu=N-1]
+\e^{+\im\frac{2\pi}{N} (0 \cdot 0)} & \e^{+\im\frac{2\pi}{N} (0 \cdot 1)} & \e^{+\im\frac{2\pi}{N} (0 \cdot 2)} & \e^{+\im\frac{2\pi}{N} (0 \cdot 3)} & \dots & \e^{+\im\frac{2\pi}{N} (0 \cdot (N-1))}\\
+\e^{+\im\frac{2\pi}{N} (1 \cdot 0)} & \e^{+\im\frac{2\pi}{N} (1 \cdot 1)} & \e^{+\im\frac{2\pi}{N} (1 \cdot 2)} & \e^{+\im\frac{2\pi}{N} (1 \cdot 3)} & \dots & \e^{+\im\frac{2\pi}{N} (1 \cdot (N-1))} \\
+\e^{+\im\frac{2\pi}{N} (2 \cdot 0)} & \e^{+\im\frac{2\pi}{N} (2 \cdot 1)} & \e^{+\im\frac{2\pi}{N} (2 \cdot 2)} & \e^{+\im\frac{2\pi}{N} (2 \cdot 3)} & \dots & \e^{+\im\frac{2\pi}{N} (2 \cdot (N-1))}\\
+\e^{+\im\frac{2\pi}{N} (3 \cdot 0)} & \e^{+\im\frac{2\pi}{N} (3 \cdot 1)} & \e^{+\im\frac{2\pi}{N} (3 \cdot 2)} & \e^{+\im\frac{2\pi}{N} (3 \cdot 3)} & \dots & \e^{+\im\frac{2\pi}{N} (3 \cdot (N-1))}\\
+\vdots & \vdots & \vdots & \vdots & \ddots & \vdots\\
+\e^{+\im\frac{2\pi}{N} ((N-1) \cdot 0)} & \e^{+\im\frac{2\pi}{N} ((N-1) \cdot 1)} & \e^{+\im\frac{2\pi}{N} ((N-1) \cdot 2)} & \e^{+\im\frac{2\pi}{N} ((N-1) \cdot 3)} & \dots &  \e^{+\im\frac{2\pi}{N} ((N-1) \cdot (N-1))}
 \end{bmatrix}
-=
+}
+\end{align}
+is set up.
+%
+In textbooks the short version is often given using powers of twiddle factor $W_N$
+\begin{align}
+\bm{W} =
+k \downarrow
+\substack{\rightarrow \mu\\
 \begin{bmatrix}
-W^{0 \cdot 0} & W^{0 \cdot 1} & W^{0 \cdot 2} & \cdots & W^{0 \cdot (N-1)}\\
-W^{1 \cdot 0} & W^{1 \cdot 1} & W^{1 \cdot 2} & \cdots & W^{1 \cdot (N-1)}\\
-W^{2 \cdot 0} & W^{2 \cdot 1} & W^{2 \cdot 2} & \cdots & W^{2 \cdot (N-1)}\\
-\vdots & & \cdots& & \vdots\\
-W^{(N-1) \cdot 0} & W^{(N-1) \cdot 1} & W^{(N-1) \cdot 2} & \cdots & W^{(N-1)(N-1)}\\
-\end{bmatrix} \,
+1 & 1 & 1 & 1 & \dots & 1\\[1em]
+1 & W_N^1 & W_N^2 & W_N^3 & \dots & W_N^{(N-1)}\\[1em]
+1 & W_N^2 & W_N^4 & W_N^6 & \dots & W_N^{2(N-1)}\\[1em]
+1 & W_N^3 & W_N^6 & W_N^9 & \dots & W_N^{3(N-1)}\\[1em]
+\vdots & \vdots & \vdots &\vdots &\ddots & \vdots\\[1em]
+1 & W_N^{(N-1)} & W_N^{2(N-1)} & W_N^{3(N-1)} & \dots & W_N^{(N-1)(N-1)}
+\end{bmatrix}
+}.
+\end{align}
+%
+The orthogonal columns---this is the essential idea just like using
+orthogonal oscillations in a Fourier series---of the Fourier matrix contain
+the samples for complex-valued
+oscillations $(\e^{\im \frac{2\pi}{N} k})^\mu$ over time index $k$ for all possible
+DFT frequencies $0 \leq \mu \leq N-1$.
+%
+All these oscillations are $N$-periodic.
+%
+The first column corresponds to $\mu=0$, this column represents a DC discrete-time
+signal, i.e. all samples exhibit amplitude one.
+%
+The second column corresponds to $\mu=1$ and contains the $N$ samples of the
+first DFT harmonic $x[k|\mu=1]=\e^{\im \frac{2\pi}{N} k}$,
+i.e. one signal period fits exactly into $N$ samples.
+%
+\subsubsection{IDFT as Matrix Operation}
+%
+Now, let us consider column vectors with $N$ entries
+for the discrete-time signal $x[k]$ of length $N$
+(actually the signal is periodic in $N$,
+the prevailing convention considers the period at time instances
+$0 \leq k \leq N-1$)
+and its DFT spectrum $X[\mu]$ ($N$-periodic as well,
+convention $0\leq \mu \leq N-1$):
+%
+\begin{align}
+\text{discrete-time signal: }
+\bm{x}_k =
 \begin{bmatrix}
 x[k=0]\\
 x[k=1]\\
 x[k=2]\\
+x[k=3]\\
 \vdots\\
-x[k=N-1]
-\end{bmatrix},
-\end{equation}
-shortly as
-\begin{equation}
-\mathbf{X}_{N \times 1} = \mathbf{W}_{N \times N} \, \mathbf{x}_{N \times 1}.
-\end{equation}
-Note that linear algebra typical notates matrices with uppercase letters and vectors
-with lowercase letters. Common signal processing convention uses lowercase letters for
-signals and uppercase letters for spectrum. Following the latter $\mathbf{X}$ is
-not a matrix, but a vector containing the DFT spectrum.
+x[k=N-1]\\
+\end{bmatrix}\qquad
+\text{DFT spectrum: }
+\bm{x}_\mu =
+\begin{bmatrix}
+X[\mu=0]\\
+X[\mu=1]\\
+X[\mu=2]\\
+X[\mu=3]\\
+\vdots\\
+X[\mu=N-1]\\
+\end{bmatrix}.
+\end{align}
+%
+The IDFT can then be written as matrix multiplication as follows
+%
+\begin{align}
+\label{eq:IDFT_as_Matrix}
+\bm{x}_k = \frac{1}{N} \bm{W} \cdot \bm{x}_\mu .
+\end{align}
+%
+The linear combination of the column vectors in $\bm{W}$ weighted by the DFT
+spectrum's coefficients $X[\cdot]$ and normalisation by $\nicefrac{1}{N}$
+reveals the discrete-time signal synthesis stage
+\label{LinComb_for_IDFT}
+%
+\begin{align*}
+\begin{bmatrix}
+x[0]\\[1em]
+x[1]\\[1em]
+x[2]\\[1em]
+x[3]\\[1em]
+\dots\\[1em]
+x[N-1]
+\end{bmatrix}
+=
+\frac{X[0]}{N}
+\begin{bmatrix}
+1\\[1em]
+1\\[1em]
+1\\[1em]
+1\\[1em]
+\dots\\[1em]
+1
+\end{bmatrix}
++\frac{X[1]}{N}
+\begin{bmatrix}
+1\\[1em]
+W_N^1\\[1em]
+W_N^2\\[1em]
+W_N^3\\[1em]
+\dots\\[1em]
+W_N^{(N-1)}
+\end{bmatrix}
++\frac{X[2]}{N}
+\begin{bmatrix}
+1\\[1em]
+W_N^2\\[1em]
+W_N^4\\[1em]
+W_N^6\\[1em]
+\dots\\[1em]
+W_N^{2(N-1)}
+\end{bmatrix}
++\frac{X[3]}{N}
+\begin{bmatrix}
+1\\[1em]
+W_N^3\\[1em]
+W_N^6\\[1em]
+W_N^9\\[1em]
+\dots\\[1em]
+W_N^{3(N-1)}
+\end{bmatrix}
++
+\dots
++\frac{X[N-1]}{N}
+\begin{bmatrix}
+1\\[1em]
+W_N^{1(N-1)}\\[1em]
+W_N^{2(N-1)}\\[1em]
+W_N^{3(N-1)}\\[1em]
+\dots\\[1em]
+W_N^{(N-1)(N-1)}
+\end{bmatrix}.
+\end{align*}
+%
+It is very similar to Fourier series synthesis: a weigthed superposition of
+harmonics and a DC signal.
+%
+The difference to the Fourier series is, that the DFT exhibits an
+$N$-periodic, discrete spectrum of Fourier coefficients,
+which induces an $N$-periodic \textbf{and} discrete-time signal.
+%
+\subsubsection{DFT as Matrix Operation}
+%
+The column vectors $\bm{w}_i$ und $\bm{w}_j$ from matrix $\bm{W}$ (that are
+considered for the superposition above) exhibit orthogonality,
+i.e. the inner product for complex vectors yields
+\begin{align}
+\bm{w}_{\text{column i}}^\text{H} \cdot \bm{w}_\text{column j} =
+\begin{cases}
+N & i=j\\
+0 & \text{else}
+\end{cases}
+\end{align}
+using the conjugate transpose operator $(\cdot)^\text{H}$.
+%
+Again this is very similar to the Fourier series fundamentals, where the
+continuous-time signals
+$\sin(\mu \omega_0 t)$, $\cos(\mu \omega_0 t)$ and $\e^{\im \mu \omega_0 t}$
+are orthogonal to each other for different $\mu\in\mathbb{Z}$.
+%
 
-The inverse of the DFT matrix reads
+The analysis stage for the discrete-time signal domain, i.e. the DFT
+can now be reinvented by some intuition:
+How 'much' of the reference signal $\bm{w}_{\text{column i}}$
+(any column in $\bm{W}$)
+is contained in the discrete-time signal $\bm{x}_k$ that is to be analysed.
+%
+In signal processing / statistic terms we look for the amount of correlation
+of the signals
+$\bm{w}_{\text{column i}}$ and $\bm{x}_k$.
+%
+In linear algebra terms we are interested in the projection\footnote{
+A projection in the strict sense of linear algebra would only be obtained
+if $\bm{w}_{\text{column i}}$
+is a unit vector, which can be easily obtained when normalising by
+$\frac{1}{\sqrt{N}}$. See the comment on the unitary matrix property
+on pg.~\pageref{pg:unitary}.}
+of $\bm{x}_k$ onto
+$\bm{w}_{\text{column i}}$, because the length of the resulting projection vector
+reveals the amount of correlation, which is precisely one DFT coefficient $X[\cdot]$.
+%
+The complex inner products $\bm{w}_{\text{column i}}^\text{H} \cdot \bm{x}_k$
+reveals these searched quantities.
+%
+Doing this for all columns of matrix $\bm W$, all DFT coefficients are obtained
+(\textbf{vector space projection mindset}):
+\begin{align}
+X[\mu=0] =& \bm{w}_{\text{column 1}}^\text{H} \cdot \bm{x}_k\\
+X[\mu=1] =& \bm{w}_{\text{column 2}}^\text{H} \cdot \bm{x}_k\\
+X[\mu=2] =& \bm{w}_{\text{column 3}}^\text{H} \cdot \bm{x}_k\\
+X[\mu=3] =& \bm{w}_{\text{column 4}}^\text{H} \cdot \bm{x}_k\\
+&\vdots\\
+X[\mu=N-1] =& \bm{w}_{\text{column N}}^\text{H} \cdot \bm{x}_k.
+\end{align}
+%
+Naturally, all operations can be merged to one single
+matrix multiplication using the conjugate transpose of $\bm W$
+%
+\begin{align}
+\bm{W}^\text{H} =
+\mu \downarrow
+\substack{\rightarrow k\\
+\begin{bmatrix}
+1 & 1 & 1 & 1 & \dots & 1\\[1em]
+1 & W_N^{-1} & W_N^{-2} & W_N^{-3} & \dots & W_N^{-(N-1)}\\[1em]
+1 & W_N^{-2} & W_N^{-4} & W_N^{-6} & \dots & W_N^{-2(N-1)}\\[1em]
+1 & W_N^{-3} & W_N^{-6} & W_N^{-9} & \dots & W_N^{-3(N-1)}\\[1em]
+\vdots & \vdots & \vdots &\vdots &\ddots & \vdots\\[1em]
+1 & W_N^{-(N-1)} & W_N^{-2(N-1)} & W_N^{-3(N-1)} & \dots & W_N^{-(N-1)(N-1)}
+\end{bmatrix}
+}.
+\end{align}
+%
+The DFT is then given as
+\begin{align}
+\label{eq:DFT_as_Matrix}
+\bm{x}_\mu = \bm{W}^\text{H} \cdot \bm{x}_k
+\end{align}
+yielding the DFT coefficients / spectrum stored in $\bm{x}_\mu$.
+%
+Here, for the matrix-vector multiplication, a matrix row $\times$ a column vector
+is a good mindset to grasp the concept of correlation / projection.
+%
+The required complex inner product is ensured by taking the conjugate transpose
+'beforehand'.
+
+
+\subsubsection{Fourier Matrix Characteristics}
+%
+The intuition that led to the DFT as matrix operation is for good reason;
+of course there is a strict mathematical proof, which we don't need here.
+%
+Rather, it is of high importance, that
+the matrix $\bm W$ has exceptional characteristics,
+cf.~\cite[Ch.~IV.2]{Strang2019}\footnote{
+also see Ch.~11 in Frank Schultz, Continuous- and Discrete-Time
+Signals and Systems---A Tutorial with Computational Examples,
+University of Rostock,
+\url{https://github.com/spatialaudio/signals-and-systems-exercises}
+}.
+%
+Generally, for a transform pair we should expect solving a forward and an
+inverse problem for the vectors $\bm v_1$ or $\bm v_2$, such as for the set
+of equations (\textbf{solving a set of linear equations mindset})
+\begin{align}
+\bm v_1 = \bm M \bm v_2\qquad \bm v_2 = \bm M^{-1} \bm v_1,
+\end{align}
+which holds if matrix $\bm M$ is square and has full rank, i.e. it is invertible.
+%
+For the Fourier matrix the relations
 \begin{equation}
 \mathbf{W}^{-1}
+= \frac{\mathbf{W}^\mathrm{H}}{N}
+= \frac{\mathbf{W}^\mathrm{*}}{N}
+\end{equation}
+hold; $(\cdot)^\mathrm{H}$ is conjugate transpose, $(\cdot)^*$ is
+complex conjugate.
+%
+Inserting this into the DFT equation \eqref{eq:DFT_as_Matrix} reveals the
+inverse problem (which is here the analysis stage by our chosen sign convention
+in the twiddle factor)
+\begin{align}
+\bm{x}_\mu = N \bm{W}^{-1} \, \bm{x}_k
+\end{align}
+and inserting the IDFT equation \eqref{eq:IDFT_as_Matrix} (our forward problem)
+into it, yields equality, cf. \eqref{eq:X_dft_idft_X},
+\begin{align}
+\bm{x}_\mu = N \bm{W}^{-1} \, (\frac{1}{N} \bm{W} \, \bm{x}_\mu) =
+\bm x_\mu
+\end{align}
+as expected.
+%
+The above relations
+$\mathbf{W}^{-1}
 = \frac{1}{N} \mathbf{W}^\mathrm{H}
-= \frac{1}{N} \mathbf{W}^\mathrm{*},
-\end{equation}
-with
-$^\mathrm{H}$ denoting conjugate-complex and transpose operation.
-This constitutes a special case for complex valued, symmetric matrix $\mathbf{W}$.
+= \frac{1}{N} \mathbf{W}^\mathrm{*}$
+are given since $\mathbf{W}$ is a special square, complex
+valued and in fact symmetric matrix.
 %
-Since $\mathbf{W}$ is also square, no transpose is required, but only the
-conjugate complex operation $()^*$, which is just the sign reversal
-in the exp() of twiddle factor.
+Furthermore, recall from above that the normalisation factors can be assigned
+differently.
 %
-If the matrices are normalized, such that
+\label{pg:unitary}
+If the matrix is normalised as $\nicefrac{\bm W}{\sqrt{N}}$, the property
 \begin{equation}
-(\frac{1}{\sqrt{N}} \mathbf{W}^\mathrm{H}) \, (\frac{1}{\sqrt{N}} \mathbf{W}) = \mathbf{I}
+\left(\frac{\mathbf{W}}{\sqrt{N}}\right)^\mathrm{H} \, \left(\frac{\mathbf{W}}{\sqrt{N}}\right) = \mathbf{I}
+=
+\left(\frac{\mathbf{W}}{\sqrt{N}} \right)^{-1} \, \left(\frac{\mathbf{W}}{\sqrt{N}} \right)
 \end{equation}
-then they are unitary, i.e. the complex conjugate transpose of the complex
-square matrix is at the same time the inverse.
-This is a key feature for DFT.
-
-The IDFT is then solving the set of equations
-$\mathbf{X} = \mathbf{W} \mathbf{x}$ for a given $\mathbf{X}$ and an unknown $\mathbf{x}$
-via
-\begin{equation}
-\mathbf{x} = \mathbf{W}^{-1} \mathbf{X} = \frac{1}{N}\mathbf{W}^* \mathbf{X}
-\end{equation}
-which precisely corresponds to \eqref{eq:IDFT}.
-Furthermore, analysis (DFT) and subsequent synthesis (IDFT) yields the input
-vector again, such as
-\begin{equation}
-\mathbf{x} = \frac{1}{N}\mathbf{W}^* \, (\mathbf{W} \mathbf{x}) =
-(\frac{1}{N}\mathbf{W}^* \, \mathbf{W}) \mathbf{x} = \mathbf{x},
-\end{equation}
-due to $\frac{1}{N}\mathbf{W}^* \mathbf{W} = \mathbf{I}$.
-This is identical to the statement \eqref{eq:x_idft_dft_x}.
-
-The reader might verify that the following DFT/IDFT pairs with $N=4$ pairs hold.
+holds, i.e. the complex conjugate transpose is equal to the inverse
+$\left(\frac{\mathbf{W}}{\sqrt{N}}\right)^\mathrm{H} =
+\left(\frac{\mathbf{W}}{\sqrt{N}} \right)^{-1}$
+and due to the matrix symmetry also
+$\left(\frac{\mathbf{W}}{\sqrt{N}}\right)^* =
+\left(\frac{\mathbf{W}}{\sqrt{N}} \right)^{-1}$
+is valid.
 %
-The input vector $\mathbf{x}=[1,1,1,1]^\mathrm{T}$ (pure DC component)
-yields $\mathbf{X} = [4,0,0,0]^\mathrm{T}$ (energy only at 'zero'-th frequency).
-The spectrum $\mathbf{X} = [1,1,1,1]^\mathrm{T}$ (all frequencies exhibit equal
-energy) yields $\mathbf{x} = [1,0,0,0]^\mathrm{T}$ (the discrete Dirac impulse).
+As a generalisation for complex valued matrices, this implies orthonormality of
+the so called unitary matrix $\nicefrac{\bm W}{\sqrt{N}}$.
+%
+This is the key feature of the Fourier matrix and builds the fundamental of the
+DFT:
+%
+the Fourier matrix spans an orthonormal vector space that is specially
+related to the roots of $z^N=1$.
+%
+\begin{framed}
+After all, the DFT pair \eqref{eq:DFT_as_Matrix}, \eqref{eq:IDFT_as_Matrix}
+is given as
+\begin{align}
+\text{ DFT: }\bm{x}_\mu = \bm{W}^* \bm{x}_k\qquad
+\text{IDFT: }\bm{x}_k = \frac{1}{N} \bm{W} \bm{x}_\mu
+\end{align}
+using the Fourier Matrix \eqref{eq:FourierMatrix}, where no matrix inversion
+and transpose, but only complex conjugate operation is required for the DFT stage.
+\end{framed}
+%
+It is worth to verify that the following DFT pairs with $N=4$ hold with the
+chosen conventions
+\begin{itemize}
+  \item the signal vector $\mathbf{x}_k=[1,1,1,1]^\mathrm{T}$ (pure DC component)
+  yields the DFT spectrum $\mathbf{x}_\mu = [4,0,0,0]^\mathrm{T}$
+  (energy only at 'zero'-th frequency bin, i.e. DC)
+  \item the DFT spectrum $\mathbf{x}_\mu = [1,1,1,1]^\mathrm{T}$
+  (all frequencies exhibit equal energy) yields $\mathbf{x}_k = [1,0,0,0]^\mathrm{T}$
+  (the discrete Dirac impulse)
+\end{itemize}
 
 %------------------------------------------------------------------------------
 \subsection{FFT as a Fast Calculation of the DFT}
-The DFT/IDFT equations include redundant calculation steps due to the twiddle
-factor characteristics.
 %
-A straightforward implementation for large $N$ demands very high computing load.
+A straightforward implementation of the DFT/IDFT equations directly or
+by its matrix versions demands very high computing load for large $N$ and
+is prone to numerical precision errors.
 %
+Fortunately, the computing load can be considerably reduced by saving many
+redundant calculations, which at the same time reduces numerical errors.
+%
+
 For example, most obviously the same $W_N^{k\mu}$ is derived for $\mu=1$, $k=2$
-and $\mu=2$, $k=1$, cf. the entries of the matrices $\mathbf{A}$ and $\mathbf{W}$.
+and $\mu=2$, $k=1$, cf. the entries of the matrices $\mathbf{K}$ and $\mathbf{W}$.
 %
 For large $N$, many angles $\frac{2\pi}{N}k\mu$ are equivalent.
 %
@@ -319,7 +757,7 @@ This is exemplarily shown in Fig.~\ref{Twiddle1}, Fig.~\ref{Twiddle2} and
 Fig.~\ref{Twiddle3} for $N=8$, $N=9$ and $N=48$ DFTs.
 %
 These plots indicate certain symmetries, which is to be expected since the
-underlying matrix has symmetry as well.
+underlying matrices exhibit symmetry as well.
 
 Algorithms that make use of these symmetries in order to reduce or simplify
 computation steps are subsumed as Fast Fourier Transform (FFT).
@@ -327,23 +765,27 @@ computation steps are subsumed as Fast Fourier Transform (FFT).
 Explained in a sloppy way, FFTs calculate certain repeatedly used twiddle factor
 results only once.
 %
-The first proposed FFT algorithm is from Cooley and Tukey \cite{Cooley1965},
+An initial FFT algorithm was proposed by \cite{Cooley1965},
 that relies on $N=2^m$, $m\in\mathbb{N}$.
 %
-Nowadays, many other and improved FFT algorithms exist, so that if $N$
-is accessible for a prime factorisation, an FFT can be calculated with much less
-processing load than a DFT.
+With a linear algebra driven mindset, FFT is about finding
+suitable matrix factorisations of $\bm W$ to avoid the calculation of the full
+matrix multiplication.
 %
-In fact, the invention of fast calculation of the DFT is a (if not the)
-milestone in DSP making these huge technological steps in the last decades of the
-digital age.
-
-The FFT concept can be derived from the linear algebra problem finding a
-suitable factorization for $\mathbf{W}$ that involves sparse matrices and plain
+This involves sparse matrices and plain
 vector permutations (which not need to be calculated as matrix operations) and
 thus reduces multiplications/additions.
 %
-You will reinvent this basis concept in one of the homework assignments.
+We will reinvent the basic concept in a homework assignment.
+%
+Nowadays, many improved FFT algorithms exist, so that if $N$
+is accessible for a prime factorisation, an FFT can be calculated with much less
+processing load than a DFT.
+%
+In fact, the invention of fast DFT calculation via FFT algorithms
+is a (if not \textit{the}) milestone in DSP allowing for the huge
+technological progress over the last decades.
+
 
 
 \begin{figure}[t]
@@ -376,9 +818,10 @@ and discrete-time angular frequency $\Omega$ is known as
 \Omega=2\pi \frac{f}{f_s}=\frac{\omega}{f_s}.
 \end{equation}
 %
-Furthermore, the twiddle factor and the DFT matrix tell us that
-the unit circle is equiangularly sampled, i.e. the angular frequency
-resolution
+Furthermore, the twiddle factor and the Fourier matrix tell us that
+the unit circle is equiangularly sampled. cf. Fig.~\ref{fig:DFT_UnitCircle}.
+%
+This means that the angular frequency resolution
 \begin{equation}
 \Delta \Omega = \frac{2\pi}{N}
 \end{equation}
@@ -395,7 +838,7 @@ we can deduce the DFT resolution in terms of the physical frequency $f$ as
 \end{equation}
 %
 This corresponds to the frequency distance between two spectral lines, i.e.
-between two bins.
+between two DFT bins.
 %
 From that, all so called eigenfrequencies of the DFT, i.e. frequencies where
 the DFT bins are located, can be derived as
@@ -417,7 +860,7 @@ frequency
 
 % -----------------------------------------------------------------------------
 \subsection{Periodicity and Symmetry of the DFT}
-The signals $x[k]$ and $X[\mu]$ of an DFT/IDFT pair exhibit a periodicity of $N$.
+The signals $x[k]$ and $X[\mu]$ of a DFT pair exhibit a periodicity of $N$.
 %
 This is shown with $k,\mu,k',m\in\mathbb{Z}$:
 \begin{align}
@@ -445,7 +888,7 @@ Thus, both signals $x[k]$ and $X[\mu]$ inherently exhibit periodicity with $N$.
 \end{figure}%
 
 A further very important characteristic of the DFT spectrum is observed,
-when $x[k]\in\mathbb{R}$ (such as audio and video signals) is assumed.
+when $x[k]\in\mathbb{R}$ (such as audio, image and video signals) is assumed.
 %
 Then the symmetries
 \begin{align}
@@ -460,7 +903,7 @@ X\left[\frac{N}{2}+m\right]=X\left[\frac{N}{2}-m\right]^*,
 \label{eq:Symmetry_DFT}
 \end{equation}
 %
-with $()^*$ again denoting conjugate-complex operation.
+with $()^*$ again denoting complex conjugate operation.
 %
 Think of $N$ as being an even number here, so $m\in \mathbb{Z}$.
 %
@@ -551,10 +994,10 @@ Therefore, an odd $N$ DFT does not include the 'half of the sampling frequency'
 bin, cf.~Fig.~\ref{DFT_Eigenfrequenzen_N4_N5}, Fig.~\ref{DFT_Eigenfrequenzen_N8_N9}.
 
 % -----------------------------------------------------------------------------
-\subsection{DFT as Sampling of the DTFT}
+\subsection{DFT as Sampling of a DTFT Spectrum}
 The following discussion of the discrete Fourier transform (DFT) as a sampled
-DTFT and explanations concerning windowing were inspired by the brilliant
-script \cite{Moeser2011} and became extended. A very similar didactic concept
+DTFT and explanations concerning windowing were inspired by the
+script \cite{Moeser2011}. A similar didactic concept
 is approached in \cite[Ch.~7.3,~7.4]{Kammeyer2002}
 
 The DFT contains all possible spectral information that can be derived from the
@@ -770,11 +1213,11 @@ x_\text{N}[k]=x[k]\cdot w_\delta[k]=x[k],
 which delivers a consistent theory, but is not helpful for practical computation.
 
 Therefore, $w_\delta[k]$ is not a window that can be employed in practice
-(and it is not actually not even a real "window" as it is constantly 1),
+(and it is not actually not even a true 'window' as it is constantly 1),
 but it should be kept in mind that $W_\delta(\Omega)$ would be the ideal window
 spectrum for the analysis of $x[k]$.
 %
-So one has to accept that instead of being able to analyse $x[k]$ and $X(\Omega)$,
+So we have to accept that instead of being able to analyse $x[k]$ and $X(\Omega)$,
 only $x_N[k]$ and $X_\text{N}(\Omega)$ are available.
 %
 How well $X_\text{N}(\Omega)\approx X(\Omega)$ can be approximated is dependent
@@ -799,11 +1242,11 @@ the spectrum of the window sequence shifted by $\Omega_0$
 X_{\delta,\text{N}}(\Omega)=W(\Omega-\Omega_0).
 \end{equation}
 %
-Therefore, one must be able to interpret the window spectrum to conclude on
+Therefore, we must be able to interpret the window spectrum to conclude on
 $X_\text{N}(\Omega)$ or even $X(\Omega)$.
 %
 The next section starts discussion on the rectangular window which is the
-`natural' window of the DFT definition as it just cuts out a section of the
+'natural' window of the DFT definition as it just cuts out a section of the
 signal where all values are weighted equally.
 
 %------------------------------------------------------------------------------
@@ -818,7 +1261,7 @@ For $0\leq k\leq N-1$, $w[k]$ can consist of arbitrary real numbers.
 %
 If $w[k]=1$ for this range, a so called rectangular window is obtained.
 %
-To determine the spectrum of a window, one can calculate the DTFT of the
+To determine the spectrum of a window, we can calculate the DTFT of the
 infinite sequence $w[k]$, where only values of the sequence that are $\neq0$
 have to be summed up:
 %
@@ -1042,7 +1485,7 @@ are not known (as is of course usually the case in real applications)?
 For the interpretation of such spectra, knowledge about windowing and different
 window types as well as experience in analysing spectra is necessary.
 %
-In a first step one can determine for each window which amplitude error arises
+In a first step we can determine for each window which amplitude error arises
 between best and worst case.
 %
 This gives an indication for the "true" spectrum.
@@ -1090,22 +1533,22 @@ This could be accomplished by an increase of $N$.
 Additionally, the quite high amplitudes in the other bins are confusing.
 %
 This point can be counteracted with a window with a higher side lobe
-attenuation that is presented in the next subsection discussing the Hanning
+attenuation that is presented in the next subsection discussing the Hann
 window.
 
 %------------------------------------------------------------------------------
-\subsubsection{Hanning Window}
+\subsubsection{Hann Window}
 \begin{figure}
 		\centering
 		\includegraphics[]{graphics/HannDefinitionen}
-		\caption{Different definitions of the Hanning window.}
+		\caption{Different definitions of the Hann window.}
 		\label{HannDefinitionen}
 \end{figure}
 
-For the Hanning window (and for other windows as well), different definitions
+For the Hann window (and for other windows as well), different definitions
 exist in the literature.
 %
-Fig.~\ref{HannDefinitionen} shows differently defined Hanning windows for two
+Fig.~\ref{HannDefinitionen} shows differently defined Hann windows for two
 lengths $N$.
 %
 The red line starts at $w[k=0]=0$, but ends with $w[k=N-1]\neq0$.
@@ -1144,18 +1587,18 @@ without losing information in bins.
 %
 Those windows do not have to be symmetric around the middle of the window.
 %
-In FIR filter design one aims at reducing an infinite impulse response to a
+In FIR filter design we aim at reducing an infinite impulse response to a
 finite length.
 %
 This is mostly done by symmetric windows to window symmetrically around the main
 peak of the impulse response.
 %
-Therefore, Matlab discriminates between the variants \texttt{periodic} and
-\texttt{symmetric} in window design.
+Therefore, Matlab and Python discriminate between the variants \texttt{periodic} and
+\texttt{symmetric},  \texttt{symmetric=True/False} respectively in window design.
 
-Here, the window definition of \cite{Moeser2011} is used, although the Matlab
-window as \texttt{periodic} version would be better suited, but the calculation
-is easier.
+Although the Matlab window as \texttt{periodic} version would be better suited
+for storytelling, for the following, the window definition of \cite{Moeser2011}
+is used, since the manual calculation is more convenient.
 %
 For the window $w[k]$ of length $N$,
 %
@@ -1168,7 +1611,7 @@ is still valid.
 %
 For $0\leq k\leq N-1$, $w[k]$ shall consist of arbitrary real numbers.
 %
-In this case here, those numbers are the ones of a Hanning window.
+In this case here, those numbers are the ones of a Hann window.
 %
 Additionally, the window should be symmetric
 %
@@ -1178,7 +1621,7 @@ w[N-1-k]=w[k]
 %
 and without zeros in the definition range.
 %
-The Hanning window version that fulfills this reads
+The Hann window version that fulfills this requirement reads
 %
 \begin{align}
 w[k]=\left\{\begin{matrix}1-\cos\left(\frac{2\pi}{N}\left(k+\frac{1}{2}\right)\right) & \text{for} & 0\leq k\leq N-1\\0 & \text{else} & \end{matrix}\right..
@@ -1211,7 +1654,7 @@ Using the results for the rectangular windows
 W_{\text{Hann}}(\Omega)=W_{\text{Rect}}(\Omega)-\frac{1}{2}\e^{\im\frac{\pi}{N}}W_{\text{Rect}}(\Omega-\frac{2\pi}{N})-\frac{1}{2}\e^{-\im\frac{\pi}{N}}W_{\text{Rect}}(\Omega+\frac{2\pi}{N}).
 \end{equation}
 %
-As can be seen, the spectrum of the Hanning window is composed of the spectrum
+As can be seen, the spectrum of the Hann window is composed of the spectrum
 of a rectangular window and two weighted spectra of rectangular windows
 that are shifted by one bin.
 %
@@ -1247,14 +1690,14 @@ W_{\text{Hann}}(\Omega)&=\e^{-\im\frac{\Omega(N-1)}{2}}\cdot\frac{\sin\left(\fra
 &=\e^{-\im\frac{\Omega(N-1)}{2}}\cdot\left(\frac{\sin\left(\frac{N}{2}\Omega\right)}{\sin\left(\frac{1}{2}\Omega\right)}+\frac{1}{2}\cdot\frac{\sin\left(\frac{N}{2}\left(\Omega-\frac{2\pi}{N}\right)\right)}{\sin\left(\frac{1}{2}\left(\Omega-\frac{2\pi}{N}\right)\right)}+\frac{1}{2}\cdot\frac{\sin\left(\frac{N}{2}\left(\Omega+\frac{2\pi}{N}\right)\right)}{\sin\left(\frac{1}{2}\left(\Omega+\frac{2\pi}{N}\right)\right)}\right).
 \end{align}
 
-The Hanning window exhibits only $N-3$ zeros compared to the rectangular window
+The Hann window exhibits only $N-3$ zeros compared to the rectangular window
 with $N-1$ zeros, so two zeros are lost for usage in spectral shaping,
 cf. fig~\ref{HanningausRectWindow} and \ref{DTFTHanningWin_lin}.
 %
 In the region close to $\Omega=\pm\pi$, the weighted and shifted spectra of
 the rectangular windows (red and dark blue line) cancel out, which can be
 observed in the logarithmic depiction in Fig.~\ref{DTFTHanningWin_log} as well,
-i.e. the Hanning window achieves a better side lobe attenuation than the
+i.e. the Hann window achieves a better side lobe attenuation than the
 rectangular window.
 %
 Around $\Omega\approx 0$, all three spectral components add up in a constructive
@@ -1265,30 +1708,30 @@ way, which leads to a broader main lobe compared to the rectangular window.
 \begin{figure}
 		\centering
 		\includegraphics[]{graphics/HanningausRectWindow}
-		\caption{Spectrum of Hanning window from superposition of weighted rectangular windows.}
+		\caption{Spectrum of Hann window from superposition of weighted rectangular windows.}
 		\label{HanningausRectWindow}
 \end{figure}
 \begin{figure}
 		\centering
 		\includegraphics[]{graphics/DTFTHanningWin_lin}
-		\caption{Magnitude of DTFT spectra for rectangular and Hanning window, $-\pi\leq\Omega<\pi$.}
+		\caption{Magnitude of DTFT spectra for rectangular and Hann window, $-\pi\leq\Omega<\pi$.}
 		\label{DTFTHanningWin_lin}
 \end{figure}
 \begin{figure}
 		\centering
 		\includegraphics[]{graphics/DTFTHanningWin_log}
-		\caption{Level of DTFT spectra for rectangular and Hanning window, $-\pi\leq\Omega<\pi$.}
+		\caption{Level of DTFT spectra for rectangular and Hann window, $-\pi\leq\Omega<\pi$.}
 		\label{DTFTHanningWin_log}
 \end{figure}
 \begin{figure}
 		\centering
 		\includegraphics[]{graphics/DFTbestworstcase_HannWin}
-		\caption{Hanning windowing for $N=8$, best case ($\mu=2$), worst case ($\mu=2-\frac{1}{2}$).}
+		\caption{Hann windowing for $N=8$, best case ($\mu=2$), worst case ($\mu=2-\frac{1}{2}$).}
 		\label{DFTbestworstcase_HannWin}
 \end{figure}
 
 Fig.~\ref{DFTbestworstcase_HannWin} illustrates the best and worst case
-scenarios for the Hanning window when a discrete frequency exactly coincides
+scenarios for the Hann window when a discrete frequency exactly coincides
 with a DFT bin (left, best) or lies in the middle between two bins (right, worst).
 %
 In contrast to the rectangular window, the exact case ($\mu=2$, left) leads to
@@ -1306,7 +1749,7 @@ The amplitude error between best and worst case for large $N$ is
 %
 which is smaller than the error for the rectangular window.
 %
-This discloses the following rule: The broader the main lobe of a window,
+This discloses the following general rule: The broader the main lobe of a window,
 the smaller the amplitude error in spectal analysis for a harmonic signal with
 the frequency
 %
@@ -1318,11 +1761,11 @@ However, a broad main lobe leads to a poor frequency resolution, i.e.
 frequencies that are close together get smeared in the convolution process
 $X_N(\Omega)=\frac{1}{2\pi}(X_N\circledast W)(\Omega)$ and cannot be separated
 clearly anymore. So, there is always a compromise involved in frequency
-resolution and amplitude resolution.
+resolution and amplitude accuracy.
 
 One last remark on the amplitudes of the windows: In the literature, windows
 are often normalised to a maximum value $=1$, which reads for
-the Hanning window according to \cite{Moeser2011}
+the Hann window according to \cite{Moeser2011}
 %
 \begin{align}
 w[k]=\left\{\begin{matrix}0.5-0.5\cos\left(\frac{2\pi}{N}\left(k+\frac{1}{2}\right)\right) & \text{for} & 0\leq k\leq N-1\\0 & \text{else} &\end{matrix}\right..
@@ -1332,26 +1775,26 @@ The definition that has been used above (cf. eq.~\eqref{eq:hanning}),
 \begin{align}
 w[k]=\left\{\begin{matrix}1-\cos\left(\frac{2\pi}{N}\left(k+\frac{1}{2}\right)\right) & \text{for} & 0\leq k\leq N-1\\0 & \text{else} &\end{matrix}\right..
 \end{align}
-was chosen to result in equal amplitudes $N$ for the rectangular and the Hanning
+was chosen to result in equal amplitudes $N$ for the rectangular and the Hann
 window.
 %
-In the famous and classic paper \cite[tab.~1]{Harris1978} this normalisation
+In the classic paper \cite[tab.~1]{Harris1978} this normalisation
 factor is treated as the so-called `coherent gain'.
 
 %------------------------------------------------------------------------------
 \subsubsection{Hamming Window}
-The Hanning window with only $N-3$ zeros in its spectrum lets two potential
+The Hann window with only $N-3$ zeros in its spectrum lets two potential
 zeros unused.
 %
 Note that using all possible $N$ zeros would not allow to create a distinct main
 lobe at $\Omega=0$, therefore only $N-1$ zeros are used for optimal window
 design.
 %
-The Hamming window adds these zeros again to the Hanning window spectrum in
+The Hamming window adds these zeros again to the Hann window spectrum in
 order to improve the attenuation of the first side lobes (left and right of
 the main lobe).
 %
-To that end, the Hanning window spectrum is modified with a factor $\beta$ (cf.
+To that end, the Hann window spectrum is modified with a factor $\beta$ (cf.
 \cite[Ch. 3.10]{Rabiner1975}):
 %
 \begin{equation}
@@ -1436,16 +1879,16 @@ to strongly attenuated first side lobes visible in the logarithmic spectrum in
 Fig.~\ref{DTFTHammingWin_log}.
 %
 Fig.~\ref{DTFTRectHanningHammingWin_log} displays a comparison of the
-rectangular, Hanning and Hamming window.
+rectangular, Hann and Hamming window.
 %
 It shows that the strongly attenuated first side lobes of the Hamming window
 are traded for a slower decrease of the side lobes, but the main lobe is
-slightly narrower than for the Hanning window.
+slightly narrower than for the Hann window.
 %
 Fig.~\ref{DFTbestworstcase_HammWin} shows the best and worst case scenario for
 a Hamming window with $\beta=0.84$.
 %
-Compared to the Hanning window the secondary maxima are lower, but the
+Compared to the Hann window the secondary maxima are lower, but the
 amplitude error in the worst case is larger.
 %
 It is approx.~$-1.78$~dB and is termed "scalloping loss" in \cite{Harris1978}.
@@ -1465,7 +1908,7 @@ It is approx.~$-1.78$~dB and is termed "scalloping loss" in \cite{Harris1978}.
 \begin{figure}
 		\centering
 		\includegraphics[]{graphics/DTFTRectHanningHammingWin_log}
-		\caption{Level of DTFT spectra for rectangular, Hanning and Hamming
+		\caption{Level of DTFT spectra for rectangular, Hann and Hamming
 		window.}
 		\label{DTFTRectHanningHammingWin_log}
 \end{figure}
@@ -1484,13 +1927,13 @@ It is approx.~$-1.78$~dB and is termed "scalloping loss" in \cite{Harris1978}.
 \subsection*{Exercise 1: \texttt{dft}/\texttt{idft} Implementation}
 \addcontentsline{toc}{subsection}{Exercise 1: \texttt{dft()}/\texttt{idft()} function}
 Write Matlab/Python functions \texttt{X = my\_dft(x)} and \texttt{x = my\_idft(X)}
-that calculate the DFT/IDFT-pair in eq.~\eqref{eq:DFT} and \eqref{eq:IDFT}
+that calculate the DFT pair in eq.~\eqref{eq:DFT} and \eqref{eq:IDFT}
 without using the pre-built functions \texttt{fft()} and \texttt{ifft()}
 functions.
 %
 Check validity and performance against the built-in functions (try large $N$).
 %
-You might consider the matrix operation approach rather than a for-loop
+We might consider the matrix operation approach rather than a for-loop
 implementation.
 
 \begin{Loesung}
@@ -1550,7 +1993,7 @@ with $k\in\mathbb{Z}$ is given.
 %
 	What is the resulting frequency resolution then?
 %
-	\item Check this example with the $N=4$ DFT Matrix
+	\item Check this example with the $N=4$ Fourier matrix
 	$\mathbf{W} =[\mathbf{w}_0\,\,\mathbf{w}_1\,\,\mathbf{w}_2\,\,\mathbf{w}_3]$
 	for the set of linear equations
 	\begin{equation}
@@ -1598,7 +2041,7 @@ with $k\in\mathbb{Z}$ is given.
 	\begin{equation}
 	2\im\cdot\sin(x)=\e^{\im x}-\e^{-\im x}\nonumber
 	\end{equation}
-	one gets
+	we get
 	\begin{align}
 	x[k]&=1+3\cdot\cos(\pi k)+\im\cdot2\im\cdot\sin\left(\frac{\pi}{2}k\right)\nonumber\\
 	&=1+3\cdot\cos(\pi k)-2\cdot\sin\left(\frac{\pi}{2}k\right)\nonumber
@@ -1625,7 +2068,7 @@ with $k\in\mathbb{Z}$ is given.
 	\Delta f=\frac{f_s}{N}=\frac{44100\,\text{Hz}}{131072}\approx0.3365\,\text{Hz}.\nonumber
 	\end{equation}
 	\item
-	Pay attention that this DFT is $1/N$ normalized.
+	Pay attention that this DFT is $1/N$ normalised.
 	%
 	Let us build the ($4\times 4$) matrix (element-wise)
 	\begin{equation}
@@ -1689,7 +2132,7 @@ with $k\in\mathbb{Z}$ is given.
 	+0\begin{bmatrix}1\\\im\\-1\\-\im\end{bmatrix}
 	\end{equation}
 	where the ? entry is easily deduced to $-\im$.
-	Think about, what this linear combination is telling you. Think of the
+	Think about, what this linear combination is telling us. Think of the
 	DFT eigensignals (rows) and index of DFT eigenfrequencies (columns) and the
 	signal samples acting as weights.
 \end{enumerate}
@@ -1771,7 +2214,7 @@ h[k]=\frac{1}{8}\cdot\left(11\cdot\delta[k]-5\cdot\delta[k-1]+7\cdot\delta[k-2]-
 	\begin{equation}
 	W_4^{\mu k}=\e^{-\im\frac{\pi}{2}\mu k}\nonumber.
 	\end{equation}
-	Again, the DFT matrix is built:
+	Again, the Fourier matrix is built:
 	\begin{center}
 		\begin{tabular}{|c|c|c|c|c|}
 		\hline
@@ -1924,7 +2367,7 @@ but unknown amplitudes and phase relation is given.
 \end{Loesung}
 
 %------------------------------------------------------------------------------
-\bibliographystyle{Schultz_PHD}
+%\bibliographystyle{Schultz_PHD}
 %\bibliographystyle{IEEEtran}
 \bibliography{literature}
 \end{document}
