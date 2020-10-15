@@ -17,6 +17,7 @@ dft/matplotlibrc
 *.cb
 *.cb2
 .*.lb
+*.cut
 
 ## Intermediate documents:
 *.dvi

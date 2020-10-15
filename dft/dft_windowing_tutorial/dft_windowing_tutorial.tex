@@ -89,7 +89,7 @@ Discrete-Time Signals} with the github URL.
 (Course \#24505)\\
 authors: Frank Schultz (concept, initial draft, OER version),
 Vera Erbes (proof read, validation, translation from German to English)\\
-Feel free to contact frank.schultz@uni-rostock.de.
+Feel free to contact frank.schultz@uni-rostock.de
 
 %------------------------------------------------------------------------------
 \section*{\underline{Spectral Analysis of Deterministic, Discrete-Time Signals}}
@@ -241,7 +241,7 @@ of the DFT pair.
 The DFT is basically a fundamental linear algebra problem, i.e.
 solving a set of linear equations, or in another train of thought: transferring
 one vector to another vector in hope for more convenient data representation,
-such as here for spectrum analysis and signal synthesis.
+such as here either for spectrum analysis or signal synthesis.
 %
 Of course it is not pure hope which helps us performing these tasks, but
 a very appropriate and intended choice of a vector base that solves our problem.
@@ -256,7 +256,7 @@ understanding of the DFT.
 
 \subsubsection{Roots on the Unit Circle}
 
-The DFT of length $N$ is an excellent example for a special
+The DFT of length $N$ is an excellent example uisng a special
 base of orthogonal vectors whose entries are set up from the roots of the $z^N=1$
 equation, i.e. equiangularly distributed locations along the unit circle
 within the complex $z$-plane, cf. Fig.~\ref{fig:DFT_UnitCircle}.
@@ -432,13 +432,34 @@ DFT frequencies $0 \leq \mu \leq N-1$.
 %
 All these oscillations are $N$-periodic.
 %
-The first column corresponds to $\mu=0$, this column represents a DC discrete-time
+The first column of $\bm W$ corresponds to $\mu=0$, this column represents a DC discrete-time
 signal, i.e. all samples exhibit amplitude one.
 %
-The second column corresponds to $\mu=1$ and contains the $N$ samples of the
-first DFT harmonic $x[k|\mu=1]=\e^{\im \frac{2\pi}{N} k}$,
-i.e. one signal period fits exactly into $N$ samples.
+The second column of $\bm W$ corresponds to $\mu=1$ and contains the $N$ samples of the
+first DFT harmonic $x[k|\mu=1]=\e^{+\im \frac{2\pi}{N} k \cdot 1}$,
+i.e. one signal period fits exactly into $N$ samples, cf.
+Fig.~\ref{fig:dft_eigensignals_columns} top.
 %
+The third column of $\bm W$ corresponds to $\mu=2$ and contains the $N$ samples of the
+second DFT harmonic $x[k|\mu=2]=\e^{+\im \frac{2\pi}{N} k \cdot 2}$,
+i.e. two signal periods fit exactly into $N$ samples, cf.
+Fig.~\ref{fig:dft_eigensignals_columns} bottom.
+%
+\begin{figure}[t]
+		\centering
+		\includegraphics[width=0.75\textwidth]{graphics/dft_eigensignals_columns}
+		\caption{For the $N=16$ DFT, the complex-valued signals
+    $\e^{+ \im \frac{2\pi}{N} k \cdot\mu}$ are shown for $\mu=1$ (top) and for
+    $\mu=2$ (bottom).
+    These signals correspond to the vectors in the 2nd and 3rd column,
+    respectively, of the Fourier matrix $\bm W$.
+    We might think of all $N$ signals / column vectors in $\bm W$ as DFT eigensignals
+    as these are used for synthesis (IDFT) and analysis (DFT) stages.}
+		\label{fig:dft_eigensignals_columns}
+\end{figure}
+
+
+
 \subsubsection{IDFT as Matrix Operation}
 %
 Now, let us consider column vectors with $N$ entries
@@ -551,8 +572,9 @@ $N$-periodic, discrete spectrum of Fourier coefficients,
 which induces an $N$-periodic \textbf{and} discrete-time signal.
 %
 \subsubsection{DFT as Matrix Operation}
+\label{Ch:DFTasMatrixOperation}
 %
-The column vectors $\bm{w}_i$ und $\bm{w}_j$ from matrix $\bm{W}$ (that are
+The column vectors $\bm{w}_i$ and $\bm{w}_j$ from matrix $\bm{W}$ (that are
 considered for the superposition above) exhibit orthogonality,
 i.e. the inner product for complex vectors yields
 \begin{align}
@@ -594,7 +616,7 @@ The complex inner products $\bm{w}_{\text{column i}}^\text{H} \cdot \bm{x}_k$
 reveals these searched quantities.
 %
 Doing this for all columns of matrix $\bm W$, all DFT coefficients are obtained
-(\textbf{vector space projection mindset}):
+(\textbf{vector projection mindset}):
 \begin{align}
 X[\mu=0] =& \bm{w}_{\text{column 1}}^\text{H} \cdot \bm{x}_k\\
 X[\mu=1] =& \bm{w}_{\text{column 2}}^\text{H} \cdot \bm{x}_k\\
@@ -651,7 +673,8 @@ University of Rostock,
 }.
 %
 Generally, for a transform pair we should expect solving a forward and an
-inverse problem for the vectors $\bm v_1$ or $\bm v_2$, such as for the set
+inverse problem for two $N \times 1$ vectors $\bm v_1$ and $\bm v_2$,
+such as for the set
 of equations (\textbf{solving a set of linear equations mindset})
 \begin{align}
 \bm v_1 = \bm M \bm v_2\qquad \bm v_2 = \bm M^{-1} \bm v_1,
@@ -706,24 +729,27 @@ $\left(\frac{\mathbf{W}}{\sqrt{N}}\right)^* =
 \left(\frac{\mathbf{W}}{\sqrt{N}} \right)^{-1}$
 is valid.
 %
-As a generalisation for complex valued matrices, this implies orthonormality of
-the so called unitary matrix $\nicefrac{\bm W}{\sqrt{N}}$.
+As a generalisation for complex valued matrices, this implies \textbf{orthonormality
+of the so called unitary matrix} $\nicefrac{\bm W}{\sqrt{N}}$.
 %
 This is the key feature of the Fourier matrix and builds the fundamental of the
 DFT:
 %
-the Fourier matrix spans an orthonormal vector space that is specially
+the unitary Fourier matrix spans an orthonormal vector space that is specially
 related to the roots of $z^N=1$.
 %
 \begin{framed}
-After all, the DFT pair \eqref{eq:DFT_as_Matrix}, \eqref{eq:IDFT_as_Matrix}
+After all, the DFT pair, this is
+\eqref{eq:DFT_as_Matrix} / \eqref{eq:DFT} and
+\eqref{eq:IDFT_as_Matrix} / \eqref{eq:IDFT},
 is given as
 \begin{align}
 \text{ DFT: }\bm{x}_\mu = \bm{W}^* \bm{x}_k\qquad
 \text{IDFT: }\bm{x}_k = \frac{1}{N} \bm{W} \bm{x}_\mu
 \end{align}
-using the Fourier Matrix \eqref{eq:FourierMatrix}, where no matrix inversion
-and transpose, but only complex conjugate operation is required for the DFT stage.
+using the Fourier Matrix \eqref{eq:FourierMatrix}.
+No matrix inversion and transpose, but only complex conjugate operation is
+required for the DFT stage.
 \end{framed}
 %
 It is worth to verify that the following DFT pairs with $N=4$ hold with the
@@ -788,7 +814,7 @@ technological progress over the last decades.
 
 
 
-\begin{figure}[t]
+\begin{figure}[b!]
 		\centering
 		\includegraphics[]{graphics/TwiddleFactorMatrix_N8}
 		\caption{$\text{arg}(W_N^{\mu k})$ (left) and $|\text{arg}(W_N^{\mu k})|$
@@ -879,7 +905,7 @@ The baseband of the DFT for $0\leq\mu\leq N-1$ corresponds to the spectrum of
 the signal $x[k]$ for $0\leq k\leq N-1$.
 %
 Thus, both signals $x[k]$ and $X[\mu]$ inherently exhibit periodicity with $N$.
-\begin{figure}
+\begin{figure}[b!]
 		\centering
 		\includegraphics[width=12cm]{graphics/Periodicity_DFT}
 		\caption{Periodicity of the DFT for a real signal with $N=8$,
@@ -984,7 +1010,7 @@ Thus, for even $N$ the symmetry axis $\mu=\frac{N}{2}$ is exactly at the bin
 indicating half of the sampling frequency
 %
 \begin{equation}
-f=\mu\frac{f_s}{N}=\frac{N}{2}\frac{f_s}{N}=\frac{f_s}{2},
+f=\mu\frac{f_s}{N}\rightarrow\frac{N}{2}\frac{f_s}{N}=\frac{f_s}{2},
 \end{equation}
 %
 whereas for odd $N$ the symmetry axis is located between the two bins around
@@ -998,7 +1024,7 @@ bin, cf.~Fig.~\ref{DFT_Eigenfrequenzen_N4_N5}, Fig.~\ref{DFT_Eigenfrequenzen_N8_
 The following discussion of the discrete Fourier transform (DFT) as a sampled
 DTFT and explanations concerning windowing were inspired by the
 script \cite{Moeser2011}. A similar didactic concept
-is approached in \cite[Ch.~7.3,~7.4]{Kammeyer2002}
+is approached in \cite[Ch.~7.3,~7.4]{Kammeyer2002} and \cite{Rabiner1975}.
 
 The DFT contains all possible spectral information that can be derived from the
 signal.
@@ -1921,6 +1947,7 @@ It is approx.~$-1.78$~dB and is termed "scalloping loss" in \cite{Harris1978}.
 \end{figure}
 
 %------------------------------------------------------------------------------
+\cleardoublepage
 \section{Exercises}
 
 %------------------------------------------------------------------------------
@@ -1928,8 +1955,7 @@ It is approx.~$-1.78$~dB and is termed "scalloping loss" in \cite{Harris1978}.
 \addcontentsline{toc}{subsection}{Exercise 1: \texttt{dft()}/\texttt{idft()} function}
 Write Matlab/Python functions \texttt{X = my\_dft(x)} and \texttt{x = my\_idft(X)}
 that calculate the DFT pair in eq.~\eqref{eq:DFT} and \eqref{eq:IDFT}
-without using the pre-built functions \texttt{fft()} and \texttt{ifft()}
-functions.
+without using the pre-built functions \texttt{fft()} and \texttt{ifft()}.
 %
 Check validity and performance against the built-in functions (try large $N$).
 %
@@ -1937,16 +1963,16 @@ We might consider the matrix operation approach rather than a for-loop
 implementation.
 
 \begin{Loesung}
-\textbf{Solution:} Python TBD\\\\
-\red{$\rightarrow$ Matlab: \texttt{UE1\_Exercise1\_Test\_dft\_idft\_functions.m}
-together with \texttt{my\_dft.m}, \texttt{my\_idft.m} and
-\texttt{get\_scaledSpectrum.m}}
+\textbf{Solution:}
+Jupyter Notebook: \texttt{dft\_windowing\_tutorial\_exercises.ipynb}
+\\Matlab: \texttt{UE1\_Exercise1\_Test\_dft\_idft\_functions.m}
+together with \texttt{my\_dft.m}, \texttt{my\_idft.m}
 \end{Loesung}
 
 
 
 % ---------------------------------------------------------------------------------
-\subsection*{Exercise 2: IDFT}
+\subsection*{Exercise 2: IDFT as Analytic Calculus / as Linear Combination}
 \addcontentsline{toc}{subsection}{Exercise 2: IDFT}
 The discrete-time signal $x[k]$
 \begin{equation}
@@ -1959,11 +1985,11 @@ with $k\in\mathbb{Z}$ is given.
 %
 	\item Show analytically that the given values of $X[\mu]$, $\mu\in\mathbb{Z}$:
 	\begin{equation}
-	X[\mu=0]=1, \hspace{5mm} X[\mu=1]=\im, \hspace{5mm} X[\mu=2]=3,
+	X[\mu=0]=4, \hspace{5mm} X[\mu=1]=4\im, \hspace{5mm} X[\mu=2]=12,
 	\end{equation}
 	are the DFT coefficients of $x[k]$ stemming from
 	\begin{equation}
-	X[\mu]=\frac{1}{N}\sum_{k=0}^{N-1}x[k]\cdot\e^{-\im\frac{2\pi}{N}k\mu}
+	X[\mu]=\sum_{k=0}^{N-1}x[k]\cdot\e^{-\im\frac{2\pi}{N}k\mu}
 	\end{equation}
 	with $N=4$.
 %
@@ -1977,12 +2003,22 @@ with $k\in\mathbb{Z}$ is given.
 %
 	Then calculate the IDFT as
 	\begin{equation}
-	x[k]=\sum_{\mu=0}^{N-1}X[\mu]\cdot\e^{\im\frac{2\pi}{N}k\mu}
+	x[k]=\frac{1}{N}\sum_{\mu=0}^{N-1}X[\mu]\cdot\e^{\im\frac{2\pi}{N}k\mu}
 	\end{equation}
 	showing that this corresponds to the given signal $x[k]$.
 %
 	\item Plot the real and imaginary part as well as the magnitude and the phase
 	of $X[\mu]$ over $\mu$.
+%
+	\item
+  Remove the DC component in the DFT spectrum $X[\mu]$ and from that synthesise
+  the signal $x_r[k]$ via IDFT.
+  Check that the synthesised signal corresponds to
+  \begin{equation}
+  x_r[k]=-2\cdot\sin\left(\frac{2\pi}{4}k\right)+3\cdot\cos\left(\frac{2\pi}{4}\cdot2k\right)
+  \hspace{5mm}\text{for}\,\,0\leq k\leq3
+  \end{equation}
+  by help of a linear combination using the Fourier matrix.
 %
 	\item A DFT-based audio analyser shall exhibit a frequency resolution of
 	$\Delta f=0.5$~Hz for a sampling frequency $f_s=44100$~Hz using a rectangular
@@ -1992,23 +2028,13 @@ with $k\in\mathbb{Z}$ is given.
 	($M\in\mathbb{N}$) are allowed.
 %
 	What is the resulting frequency resolution then?
-%
-	\item Check this example with the $N=4$ Fourier matrix
-	$\mathbf{W} =[\mathbf{w}_0\,\,\mathbf{w}_1\,\,\mathbf{w}_2\,\,\mathbf{w}_3]$
-	for the set of linear equations
-	\begin{equation}
-	\mathbf{X}_{4\times1} = \mathbf{W}_{4\times4} \cdot \mathbf{x}_{4\times1}
-	\end{equation}
-	by interpreting the matrix multiplication as linear combination of orthogonal
-	$\mathbf{w}$ vectors
-	\begin{equation}
-	\mathbf{X}_{4\times1} = x[0] \mathbf{w}_0
-	+ x[1] \mathbf{w}_1 + x[2] \mathbf{w}_2 + x[3] \mathbf{w}_3.
-	\end{equation}
+
 \end{enumerate}
 
 \begin{Loesung}
 \textbf{Solution:}
+
+Jupyter Notebook: \texttt{dft\_windowing\_tutorial\_exercises.ipynb}
 \begin{enumerate}[label=\alph*)]
 	\item \begin{align}
 	x[0]&=-2\cdot\sin\left(2\pi\frac{1}{4}\cdot0\right)+3\cdot\cos\left(2\pi\frac{2}{4}\cdot0\right)+1=3+1=4\nonumber\\
@@ -2017,22 +2043,22 @@ with $k\in\mathbb{Z}$ is given.
 	x[3]&=-2\cdot\sin\left(2\pi\frac{1}{4}\cdot3\right)+3\cdot\cos\left(2\pi\frac{2}{4}\cdot3\right)+1=2-3+1=0\nonumber
 	\end{align}
 	\item \begin{align}
-	X[\mu=0]&=1=1\cdot\e^{\im\cdot0}\nonumber\\
-	X[\mu=1]&=\im=1\cdot\e^{\im\frac{\pi}{2}}\nonumber\\
-	X[\mu=2]&=3=3\cdot\e^{\im\cdot0}\nonumber
+	X[\mu=0]&=4=4\cdot\e^{\im\cdot0}\nonumber\\
+	X[\mu=1]&=4\im=4\cdot\e^{\im\frac{\pi}{2}}\nonumber\\
+	X[\mu=2]&=12=12\cdot\e^{\im\cdot0}\nonumber
 	\end{align}
 	For $x[k]\in\mathbb{R}$ the symmetry $X[1]^*=X[3]$ holds, thus
 	\begin{align}
-	X[\mu=3]=1\cdot\e^{-\im\cdot\frac{\pi}{2}}.\nonumber
+	X[\mu=3]=-4\im=4\cdot\e^{-\im\cdot\frac{\pi}{2}}.\nonumber
 	\end{align}
 	The IDFT is given as
 	\begin{align}
-	x[k]&=\sum_{\mu=0}^{N-1}X[\mu]\cdot\e^{\im\frac{2\pi}{N}k\mu}\nonumber\\
-	&=\sum_{\mu=0}^{3}X[\mu]\cdot\e^{\im\frac{\pi}{2}k\mu}.\nonumber
+	x[k]&=\frac{1}{N}\sum_{\mu=0}^{N-1}X[\mu]\cdot\e^{\im\frac{2\pi}{N}k\mu}\nonumber\\
+	&=\frac{1}{4}\sum_{\mu=0}^{3}X[\mu]\cdot\e^{\im\frac{\pi}{2}k\mu}.\nonumber
 	\end{align}
 	With the spectral coefficients in the form $X[\mu]=A[\mu]\cdot\e^{\im\phi[\mu]}$ this simplifies to
 	\begin{align}
-	x[k]&=1\cdot\e^{\im\cdot0}\cdot\e^{\im\frac{\pi}{2}k\cdot0}+1\cdot\e^{\im\cdot\frac{\pi}{2}}\cdot\e^{\im\frac{\pi}{2}k\cdot1}+3\cdot\e^{\im\cdot0}\cdot\e^{\im\frac{\pi}{2}k\cdot2}+1\cdot\e^{-\im\cdot\frac{\pi}{2}}\cdot\e^{\im\frac{\pi}{2}k\cdot3}\nonumber\\
+  x[k]&=\frac{1}{4}(4\cdot\e^{\im\cdot0}\cdot\e^{\im\frac{\pi}{2}k\cdot0}+4\cdot\e^{\im\cdot\frac{\pi}{2}}\cdot\e^{\im\frac{\pi}{2}k\cdot1}+12\cdot\e^{\im\cdot0}\cdot\e^{\im\frac{\pi}{2}k\cdot2}+4\cdot\e^{-\im\cdot\frac{\pi}{2}}\cdot\e^{\im\frac{\pi}{2}k\cdot3})\nonumber\\
 	&=1+\e^{\im\frac{\pi}{2}}\cdot\e^{\im\frac{\pi}{2}k}+3\cdot\e^{\im\pi k}+\e^{-\im\frac{\pi}{2}}\cdot\e^{\im\frac{3\pi}{2}k}\nonumber\\
 	&=1+\e^{\im\frac{\pi}{2}}\cdot\e^{\im\frac{\pi}{2}k}+3\cdot\left(\cos(\pi k)+\underbrace{\im\cdot\sin(\pi k)}_{=0\,\,\mathrm{if}\,\,k\in\mathbb{Z}}\right)-\e^{\im\frac{\pi}{2}}\cdot\e^{-\im\frac{\pi}{2}k}\nonumber\\
 	&=1+3\cdot\cos(\pi k)+\underbrace{\e^{\im\frac{\pi}{2}}}_{=\im}\cdot\left(\e^{\im\frac{\pi}{2}k}-\e^{-\im\frac{\pi}{2}k}\right).\nonumber
@@ -2055,32 +2081,55 @@ with $k\in\mathbb{Z}$ is given.
 		\includegraphics[width=10cm]{graphics/UE1_Exercise2_IDFT}%
 		\captionof{figure}{DFT of $x[k]$ for exercise 2 c).}%
 	\end{center}%
-	\item \begin{align}
-	\Delta f=\frac{f_s}{N}=\frac{f_s}{2^M}&\stackrel{!}{=}0.5\,\text{Hz}\nonumber\\
-	M&=\left\lceil\log_{2}\left(\frac{f_s}{\Delta f}\right)\right\rceil_{\in\mathbb{N}}\nonumber\\
-	&=\left\lceil\log_{2}\left(\frac{44100\,\text{Hz}}{0.5\,\text{Hz}}\right)\right\rceil_{\in\mathbb{N}}\nonumber\\
-	&=\left\lceil16.4285...\right\rceil_{\in\mathbb{N}}\nonumber\\
-	&=17\nonumber\\
-	\Rightarrow\hspace{5mm} N&=2^M=2^{17}=131072\nonumber
-	\end{align}
-	The resulting frequency resolution is thus
-	\begin{equation}
-	\Delta f=\frac{f_s}{N}=\frac{44100\,\text{Hz}}{131072}\approx0.3365\,\text{Hz}.\nonumber
-	\end{equation}
 	\item
-	Pay attention that this DFT is $1/N$ normalised.
+  Recall that the IDFT is given as $\bm x_k = \frac{1}{N} \bm W \bm x_\mu$ with
+  the vectors
+  \begin{align}
+  \text{discrete-time signal: }
+  \bm{x}_k =
+  \begin{bmatrix}
+  x[k=0]\\
+  x[k=1]\\
+  x[k=2]\\
+  x[k=3]\\
+  \vdots\\
+  x[k=N-1]\\
+  \end{bmatrix}\qquad
+  \text{DFT spectrum: }
+  \bm{x}_\mu =
+  \begin{bmatrix}
+  X[\mu=0]\\
+  X[\mu=1]\\
+  X[\mu=2]\\
+  X[\mu=3]\\
+  \vdots\\
+  X[\mu=N-1]\\
+  \end{bmatrix}.
+  \end{align}
+  and the Fourier matrix $\bm W$.
+
+  The samples of the DC-free signal $x_r[k]$ set up as a column vector are
+ \begin{align}
+ \mathbf{xr}_{k} =
+ \begin{bmatrix}
+ x_r[k=0]=3\\x_r[k=1]=-5\\x_r[k=2]=3\\x_r[k=0]=-1
+ \end{bmatrix}
+ \end{align}
+  just by subtracting the DC amount 1 from $x[k]$.
+  %
+  Let us check the IDFT by matrix multiplication.
 	%
-	Let us build the ($4\times 4$) matrix (element-wise)
+	We build the $4\times 4$ Fourier matrix (by element-wise operation)
 	\begin{equation}
-	\mathbf{W} = \mathrm{e}^{-\mathrm{j}\frac{2\pi}{4} \mathbf{A}}
+	\mathbf{W} = \mathrm{e}^{+\mathrm{j}\frac{2\pi}{4} \mathbf{K}}
 	\end{equation}
 	from the twiddle factor
 	\begin{equation}
-	W = \mathrm{e}^{-\mathrm{j}\frac{2\pi}{2}}
+	W_{N=4} = \mathrm{e}^{+\mathrm{j}\frac{2\pi}{4}}
 	\end{equation}
 	and from matrix (this is an outer product)
 	\begin{equation}
-	\mathbf{A} =
+	\mathbf{K} =
 	\begin{bmatrix}
 	0\\
 	1\\
@@ -2091,8 +2140,7 @@ with $k\in\mathbb{Z}$ is given.
 	\begin{bmatrix}
 	0 & 1 & 2 & 3
 	\end{bmatrix}
-	=
-	\mathbf{A} =
+  =
 	\begin{bmatrix}
 	0 & 0 & 0 & 0\\
 	0 & 1 & 2 & 3\\
@@ -2106,42 +2154,63 @@ with $k\in\mathbb{Z}$ is given.
 	\begin{align}
 	\mathbf{W} = \begin{bmatrix}
 	1 & 1 & 1 & 1\\
-	1 & -\mathrm{j} & -1 & \mathrm{j}\\
+	1 & +\mathrm{j} & -1 & -\mathrm{j}\\
 	1 & -1 & 1 & -1\\
-	1 & \mathrm{j} & -1 & -\mathrm{j}
-	\end{bmatrix},
+	1 & -\mathrm{j} & -1 & +\mathrm{j}
+	\end{bmatrix}
+  \end{align}
+  The columns are the DFT signals
+  \begin{align}
 	\mathbf{w}_1 = \begin{bmatrix}1\\1\\1\\1\end{bmatrix},
-	\mathbf{w}_2 = \begin{bmatrix}1\\-\im\\-1\\\im\end{bmatrix},
+	\mathbf{w}_2 = \begin{bmatrix}1\\+\im\\-1\\-\im\end{bmatrix},
 	\mathbf{w}_3 = \begin{bmatrix}1\\-1\\1\\-1\end{bmatrix},
-	\mathbf{w}_4 = \begin{bmatrix}1\\\im\\-1\\-\im\end{bmatrix}.
+	\mathbf{w}_4 = \begin{bmatrix}1\\-\im\\-1\\+\im\end{bmatrix}.
 	\end{align}
-	Thus,
+  to be used for the linear combination
 	\begin{equation}
-	4 \cdot \mathbf{X}_{4\times1} = x[0] \, \mathbf{w}_0
-	+ x[1] \,\mathbf{w}_1
-	+ x[2] \,\mathbf{w}_2
-	+ x[3] \,\mathbf{w}_3.
+	\mathbf{xr}_k =
+  \frac{X[\mu=0]}{4} \, \mathbf{w}_1
+	+ \frac{X[\mu=1]}{4} \,\mathbf{w}_2
+	+ \frac{X[\mu=2]}{4} \,\mathbf{w}_3
+	+ \frac{X[\mu=3]}{4} \,\mathbf{w}_4.
 	\end{equation}
-	becomes
+  using the DFT coefficients from task b).
+
+	As $X[\mu=0]$ shall be made zero by intention we are left with the
+  linear combination
 	\begin{equation}
-	 4 \cdot \mathbf{X}_{4\times1} =
-	 4 \cdot \begin{bmatrix}1\\\im\\3\\?\end{bmatrix}=
-	 4\begin{bmatrix}1\\1\\1\\1\end{bmatrix}
-  -4\begin{bmatrix}1\\-\im\\-1\\\im\end{bmatrix}
-  +4\begin{bmatrix}1\\-1\\1\\-1\end{bmatrix}
-	+0\begin{bmatrix}1\\\im\\-1\\-\im\end{bmatrix}
+  \mathbf{xr}_k=
+  \frac{0}{4}\cdot\begin{bmatrix}1\\1\\1\\1\end{bmatrix}+
+	\frac{+4\im}{4}\cdot\begin{bmatrix}1\\+\im\\-1\\-\im\end{bmatrix}+
+	\frac{12}{4}\cdot\begin{bmatrix}1\\-1\\1\\-1\end{bmatrix}+
+	\frac{-4\im}{4}\cdot\begin{bmatrix}1\\-\im\\-1\\+\im\end{bmatrix}
+  =
+  \begin{bmatrix}
+  3\\-5\\3\\-1
+  \end{bmatrix}
 	\end{equation}
-	where the ? entry is easily deduced to $-\im$.
-	Think about, what this linear combination is telling us. Think of the
-	DFT eigensignals (rows) and index of DFT eigenfrequencies (columns) and the
-	signal samples acting as weights.
+  which gives the desired result.
+%
+  \item \begin{align}
+  \Delta f=\frac{f_s}{N}=\frac{f_s}{2^M}&\stackrel{!}{=}0.5\,\text{Hz}\nonumber\\
+  M&=\left\lceil\log_{2}\left(\frac{f_s}{\Delta f}\right)\right\rceil_{\in\mathbb{N}}\nonumber\\
+  &=\left\lceil\log_{2}\left(\frac{44100\,\text{Hz}}{0.5\,\text{Hz}}\right)\right\rceil_{\in\mathbb{N}}\nonumber\\
+  &=\left\lceil16.4285...\right\rceil_{\in\mathbb{N}}\nonumber\\
+  &=17\nonumber\\
+  \Rightarrow\hspace{5mm} N&=2^M=2^{17}=131072\nonumber
+  \end{align}
+  The resulting frequency resolution is thus
+  \begin{equation}
+  \Delta f=\frac{f_s}{N}=\frac{44100\,\text{Hz}}{131072}\approx0.3365\,\text{Hz}.\nonumber
+  \end{equation}
+%
 \end{enumerate}
 \end{Loesung}
 
 
 
 %------------------------------------------------------------------------------
-\subsection*{Exercise 3: DFT analysis using a rectangular window}
+\subsection*{Exercise 3: DFT Analysis Using a Rectangular Window / DTFT Interpolation}
 \addcontentsline{toc}{subsection}{Exercise 3: DFT Analysis Using a Rectangular Window}
 A sine signal $x[k]=\cos(\Omega k)$ with $\Omega=2\cdot\frac{2\pi}{N}$, $N=8$,
 $0\leq k \leq N-1$ is to be analysed with the DFT eq.~\eqref{eq:DFT} assuming a
@@ -2165,15 +2234,18 @@ sampling frequency of $f_s=48$~kHz.
 \end{enumerate}
 
 \begin{Loesung}
-\textbf{Solution:} Python TBD\\\\
-\red{$\rightarrow$ Matlab: \texttt{UE1\_Exercise3\_DFT\_analysis.m}
-together with \texttt{interpolate\_DFT.m}}
+\textbf{Solution:}
+
+Jupyter Notebook: \texttt{dft\_windowing\_tutorial\_exercises.ipynb}
+
+Matlab: \texttt{UE1\_Exercise3\_DFT\_analysis.m}
+together with \texttt{interpolate\_DFT.m}
 \end{Loesung}
 
 
 
 % ---------------------------------------------------------------------------------
-\subsection*{Exercise 4: DFT of an Impulse Response}
+\subsection*{Exercise 4: DFT / DTFT of an Impulse Response}
 \addcontentsline{toc}{subsection}{Exercise 4: DFT of an impulse response}
 The finite length impulse response (FIR filter) $h[k]$ of an LTI system is given
 as
@@ -2182,6 +2254,8 @@ as
 h[k]=\frac{1}{8}\cdot\left(11\cdot\delta[k]-5\cdot\delta[k-1]+7\cdot\delta[k-2]-9\cdot\delta[k-3]\right)
 \end{equation}
 %
+The DFT and DTFT spectrum correspond to the transfer function of the system.
+
 \begin{enumerate}[label=\alph*)]
 	\item Calculate the DFT analytically
 %
@@ -2189,7 +2263,6 @@ h[k]=\frac{1}{8}\cdot\left(11\cdot\delta[k]-5\cdot\delta[k-1]+7\cdot\delta[k-2]-
 	H[\mu]=\sum_{k=0}^{N-1}h[k]\cdot\e^{-\im\frac{2\pi}{N}k\mu}
 	\end{equation}
 	for $N=4$ and $0\leq k\leq N-1$.
-	The DFT spectrum corresponds to the transfer function of the system.
 %
 	\item Calculate the magnitude $|H[\mu]|$ and the phase response $\arg(H[\mu])$
 	for $0\leq\mu\leq 3$. State the magnitude as level in dB and the phase in
@@ -2206,33 +2279,72 @@ h[k]=\frac{1}{8}\cdot\left(11\cdot\delta[k]-5\cdot\delta[k-1]+7\cdot\delta[k-2]-
 \begin{Loesung}
 \textbf{Solution:}
 \begin{enumerate}[label=\alph*)]
-	\item For $N=4$, the DFT is
-	\begin{equation}
-	H[\mu]=\sum_{k=0}^{3}h[k]\e^{-\im\frac{2\pi}{4}\mu k}=\sum_{k=0}^{3}h[k]\e^{-\im\frac{\pi}{2}\mu k}\nonumber
-	\end{equation}
-	with the twiddle factors
-	\begin{equation}
-	W_4^{\mu k}=\e^{-\im\frac{\pi}{2}\mu k}\nonumber.
-	\end{equation}
-	Again, the Fourier matrix is built:
-	\begin{center}
-		\begin{tabular}{|c|c|c|c|c|}
-		\hline
-		$W_4^{\mu k}$ & $k=0$ & $k=1$ & $k=2$ & $k=3$\\\hline
-		$\mu=0$ & $1$ & $1$ & $1$ & $1$\\\hline
-		$\mu=1$ & $1$ & $-\im$ & $-1$ & $\im$\\\hline
-		$\mu=2$ & $1$ & $-1$ & $1$ & $-1$\\\hline
-		$\mu=3$ & $1$ & $\im$ & $-1$ & $-\im$\\\hline
-		\end{tabular}
-	\end{center}
-	Hence, for $H[\mu]$ follows (this time using the row times column matrix
-	multiplication approach written in detail)
-	\begin{align}
-	H[0]&=\sum_{k=0}^{3} W_4^{0\cdot k} \cdot h[k]=\left(\frac{11}{8}\cdot1\right)+\left(\frac{-5}{8}\cdot1\right)+\left(\frac{7}{8}\cdot1\right)+\left(\frac{-9}{8}\cdot1\right)=\frac{4}{8}=\frac{1}{2}\nonumber\\
-	H[1]&=\sum_{k=0}^{3} W_4^{1\cdot k} \cdot h[k]=\left(\frac{11}{8}\cdot1\right)+\left(\frac{-5}{8}\cdot(-\im)\right)+\left(\frac{7}{8}\cdot(-1)\right)+\left(\frac{-9}{8}\cdot\im\right)=\frac{4}{8}-\im\frac{4}{8}=\frac{1}{2}-\im\frac{1}{2}\nonumber\\
-	H[2]&=\sum_{k=0}^{3} W_4^{2\cdot k} \cdot h[k]=\left(\frac{11}{8}\cdot1\right)+\left(\frac{-5}{8}\cdot(-1)\right)+\left(\frac{7}{8}\cdot1\right)+\left(\frac{-9}{8}\cdot(-1)\right)=\frac{32}{8}=4\nonumber\\
-	H[3]&=\sum_{k=0}^{3} W_4^{3\cdot k} \cdot h[k]=\left(\frac{11}{8}\cdot1\right)+\left(\frac{-5}{8}\cdot\im\right)+\left(\frac{7}{8}\cdot(-1)\right)+\left(\frac{-9}{8}\cdot(-\im)\right)=\frac{4}{8}+\im\frac{4}{8}=\frac{1}{2}+\im\frac{1}{2}\nonumber
-	\end{align}
+	\item
+  If we set up the FIR $h[k]$ and the DFT spectrum $H[\mu]$ as vectors
+  \begin{equation}
+  \mathbf{h}_k =
+  \begin{bmatrix}
+  h[k=0]\\
+  h[k=1]\\
+  h[k=2]\\
+  h[k=3]\\
+  \end{bmatrix}
+  =
+  \frac{1}{8}
+  \begin{bmatrix}
+  11\\
+  -5\\
+  7\\
+  -9\\
+  \end{bmatrix}
+  \qquad
+  \mathbf{h}_\mu =
+  \begin{bmatrix}
+  H[\mu=0]\\
+  H[\mu=1]\\
+  H[\mu=2]\\
+  H[\mu=3]\\
+  \end{bmatrix}
+  \end{equation}
+  the DFT can be calculated with matrix multiplication,
+  cf. Section \ref{Ch:DFTasMatrixOperation},
+  \begin{equation}
+  \mathbf{h}_\mu = \mathbf{W}^* \mathbf{h}_k
+  \end{equation}
+  using again the $4 \times 4$ Fourier matrix (see exercise 2)
+  \begin{align}
+  \mathbf{W} = \begin{bmatrix}
+  1 & 1 & 1 & 1\\
+  1 & +\mathrm{j} & -1 & -\mathrm{j}\\
+  1 & -1 & 1 & -1\\
+  1 & -\mathrm{j} & -1 & +\mathrm{j}
+  \end{bmatrix}
+  \end{align}
+  The columns of $\bm W$ are the DFT eigensignals
+  \begin{align}
+  \mathbf{w}_\text{column 1} = \begin{bmatrix}1\\1\\1\\1\end{bmatrix},
+  \mathbf{w}_\text{column 2} = \begin{bmatrix}1\\+\im\\-1\\-\im\end{bmatrix},
+  \mathbf{w}_\text{column 3} = \begin{bmatrix}1\\-1\\1\\-1\end{bmatrix},
+  \mathbf{w}_\text{column 4} = \begin{bmatrix}1\\-\im\\-1\\+\im\end{bmatrix}.
+  \end{align}
+  The DFT is the signal analysis stage, i.e. correlation of the input signal with
+  DFT eigensignals. This is realised by the (complex) inner product of the two vectors.
+  Thus, the inner products $H[\mu] = \mathbf{w}_{\text{column } (\mu+1)}^\text{H} \mathbf{h}_k$
+  requires complex conjugates
+  \begin{align}
+  &\mathbf{w}_\text{column 1}^\text{H} = \begin{bmatrix}1, 1, 1, 1\end{bmatrix}\nonumber\\
+  &\mathbf{w}_\text{column 2}^\text{H} = \begin{bmatrix}1,-\im,-1,+\im\end{bmatrix}\nonumber\\
+  &\mathbf{w}_\text{column 3}^\text{H} = \begin{bmatrix}1,-1,1,-1\end{bmatrix}\nonumber\\
+  &\mathbf{w}_\text{column 4}^\text{H} = \begin{bmatrix}1,+\im,-1,-\im\end{bmatrix}.
+  \end{align}
+  Calculated for all $\mu$ this yields the DFT spectrum
+  \begin{align}
+  H[\mu=0]&=\mathbf{w}_{\text{column 1}}^\text{H} \mathbf{h}_k = \left(1\cdot\frac{11}{8}\right)+\left(1\cdot\frac{-5}{8}\right)+\left(1\cdot\frac{7}{8}\right)+\left(1\cdot\frac{-9}{8}\right)=\frac{4}{8}=\frac{1}{2}\nonumber\\
+  H[\mu=1]&=\mathbf{w}_{\text{column 2}}^\text{H} \mathbf{h}_k = \left(1\cdot\frac{11}{8}\right)+\left((-\im)\cdot\frac{-5}{8}\right)+\left((-1)\cdot\frac{7}{8}\right)+\left(\im\cdot\frac{-9}{8}\right)=\frac{4}{8}-\im\frac{4}{8}=\frac{1}{2}-\im\frac{1}{2}\nonumber\\
+  H[\mu=2]&=\mathbf{w}_{\text{column 3}}^\text{H} \mathbf{h}_k= \left(1\cdot\frac{11}{8}\right)+\left((-1)\cdot\frac{-5}{8}\right)+\left(1\cdot\frac{7}{8}\right)+\left((-1)\cdot\frac{-9}{8}\right)=\frac{32}{8}=4\nonumber\\
+  H[\mu=3]&=\mathbf{w}_{\text{column 4}}^\text{H} \mathbf{h}_k= \left(1\cdot\frac{11}{8}\right)+\left(\im\cdot\frac{-5}{8}\right)+\left((-1)\cdot\frac{7}{8}\right)+\left((-\im)\cdot\frac{-9}{8}\right)=\frac{4}{8}+\im\frac{4}{8}=\frac{1}{2}+\im\frac{1}{2}\nonumber
+  \end{align}
+
 	\item \begin{align}
 	|H[0]|&=\frac{1}{2} \hspace{5mm}\longrightarrow\hspace{5mm} 20\log_{10}\left(\frac{1}{2}\right)=-6.02\,\text{dB}\nonumber\\
 	|H[1]|&=\sqrt{\frac{1}{2^2}+\frac{1}{2^2}}=\frac{1}{\sqrt{2}} \hspace{5mm}\longrightarrow\hspace{5mm} 20\log_{10}\left(\frac{1}{\sqrt{2}}\right)=-3.01\,\text{dB}\nonumber\\
@@ -2246,7 +2358,7 @@ h[k]=\frac{1}{8}\cdot\left(11\cdot\delta[k]-5\cdot\delta[k-1]+7\cdot\delta[k-2]-
 	\item \text{}
 	\begin{center}%
 		\includegraphics[]{graphics/UE1_Exercise4_Spectrum}%
-		\captionof{figure}{DFT and interpolated DTFT spectrum for $h[k]$}%
+		\captionof{figure}{DFT (blue dots) and DTFT (red line) spectrum for $h[k]$}%
 	\end{center}%
 	\underline{sampling frequency:} $\Delta f=\frac{f_s}{N}\,\,\Leftrightarrow\,\,f_s=\Delta f\cdot N=500\,\text{Hz}\cdot4=2000\,\text{Hz}$\\\\
 	\underline{filter characteristic:} highpass filter, -3~dB corner frequency at
@@ -2262,8 +2374,8 @@ h[k]=\frac{1}{8}\cdot\left(11\cdot\delta[k]-5\cdot\delta[k-1]+7\cdot\delta[k-2]-
 \addcontentsline{toc}{subsection}{Exercise 5: DFT parameterisation}
 A composite signal
 $x[k]=A_1\cdot\e^{\im(\Omega_1 k+\phi_1)}+A_2\cdot\e^{\im(\Omega_2 k+\phi_2)}$
-with the known frequencies $\Omega_1=\frac{1}{30}\pi$ und $\Omega_2=\frac{1}{4}\pi$
-but unknown amplitudes and phase relation is given.
+with the known frequencies $\Omega_1=\frac{1}{30}\pi$ and $\Omega_2=\frac{1}{4}\pi$
+but unknown amplitude and phase relation is given.
 %
 \begin{enumerate}[label=\alph*)]
 	\item What DFT length $N$ must be set up so that the exact amplitude and
@@ -2280,18 +2392,18 @@ but unknown amplitudes and phase relation is given.
 \textbf{Solution:}
 \begin{enumerate}[label=\alph*)]
 	\item DFT eigenfrequencies: $\Omega_\text{DFT}=\frac{2\pi}{N}\mu$\\\\
-	$\Omega_1$ and $\Omega_2$ must be DFT eigenfrequencies:
+	$\Omega_1$ and $\Omega_2$ must be DFT eigenfrequencies (recall $\mu\in\mathbb{Z}$):
 %
 	\begin{align}
 	\Omega_1&=\frac{\pi}{30}=\frac{2\pi}{N}\mu \hspace{5mm}\Leftrightarrow\hspace{5mm} N=60\cdot\mu\nonumber\\
 	\Omega_2&=\frac{\pi}{4}=\frac{2\pi}{N}\mu \hspace{5mm}\Leftrightarrow\hspace{5mm} N=8\cdot\mu\nonumber
 	\end{align}
 %
-	Both conditions together can be fulfilled from $N=120$ (or multiples thereof).
+	Both conditions together can be fulfilled when using $N=120$ (or multiples thereof).
 %
 	\item \begin{align}
-	\mu_1&=\Omega_1\cdot\frac{N}{2\pi}=\frac{\pi}{30}\cdot\frac{120}{2\pi}=2, \hspace{5mm}\text{i.e. the 3rd bin}\nonumber\\
-	\mu_2&=\Omega_2\cdot\frac{N}{2\pi}=\frac{\pi}{4}\cdot\frac{120}{2\pi}=15, \hspace{5mm}\text{i.e. the 16th bin}\nonumber
+	\mu_1&=\Omega_1\cdot\frac{N}{2\pi}=\frac{\pi}{30}\cdot\frac{120}{2\pi}=2, \hspace{5mm}\text{i.e. the 3rd bin / column of } \bm W\nonumber\\
+	\mu_2&=\Omega_2\cdot\frac{N}{2\pi}=\frac{\pi}{4}\cdot\frac{120}{2\pi}=15, \hspace{5mm}\text{i.e. the 16th bin / column of } \bm W\nonumber
 	\end{align}
 %
 	\item The discrete angular frequency $\Omega_3=\frac{30.5}{60}\pi$ can be
