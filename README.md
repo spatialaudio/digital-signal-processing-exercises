@@ -3,7 +3,7 @@ digital-signal-processing-exercises
 The project is currently under heavy development while adding new material for
 the winter term 2020/21.
 
-# Exercises for a Master Course on Digital Signal Processing
+# Exercises for a Master's Course on Digital Signal Processing
 
 These exercises accompany the lecture
 
@@ -16,23 +16,22 @@ The Jupyter notebooks are accessible in various ways
 
 - Online as [static web pages](https://nbviewer.jupyter.org/github/spatialaudio/digital-signal-processing-exercises/blob/outputs/index.ipynb) hosted with help of https://nbviewer.jupyter.org
 - Online as [static web pages](https://github.com/spatialaudio/digital-signal-processing-exercises/blob/outputs/index.ipynb) directly in the github preview
-- Online for [interactive usage](https://mybinder.org/v2/gh/spatialaudio/digital-signal-processing-exercises/outputs) hosted with help of https://mybinder.org
-- Local for interactive usage on your computer by cloning / downloading the repository from
+- Online for [interactive usage](https://mybinder.org/v2/gh/spatialaudio/digital-signal-processing-exercises/master) hosted with help of https://mybinder.org
+- Local for interactive usage on the user's computer by cloning / downloading the repository from
 https://github.com/spatialaudio/digital-signal-processing-exercises
 
 Note: We use the [output branch](https://github.com/spatialaudio/digital-signal-processing-exercises/tree/outputs) merely to have convenient way of rendered results and
-plots for static web pages, whereas the master branch contains no outputs
+plots for static web pages, whereas the [master branch](https://github.com/spatialaudio/digital-signal-processing-exercises) contains no outputs
 for convenient diff debugging. Thus, output branch is derived from a current
 appropriate master version and will be changed hard from time to time.
 
 ## Python / Jupyter Environment
 
 The [Anaconda Python distribution](https://www.anaconda.com/products/individual)
-is a very convenient out of the box solution to install the required software
-to use Jupyter Notebook with Python.
+is a very convenient out of the box solution to install the required software.
 
-It is very likely that the root environment already delivers all required packages.
-
+It is very likely that Anaconda's root environment already delivers all
+required packages.
 If not, creating and activating a dedicated environment `my_dsp` might be useful:
 
 - get at least python 3.7x, numpy, scipy, matplotlib, notebook, ipykernel, the
@@ -56,7 +55,7 @@ other packages are very useful tools
 
 `jupyter notebook`
 
-- Change Kernel in the Jupyter Notebook GUI to my_dsp.
+- Change Kernel in the Jupyter Notebook GUI to my_dsp
 
 - Have fun with the playgrounds
 
