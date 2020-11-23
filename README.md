@@ -32,20 +32,20 @@ is a very convenient out of the box solution to install the required software.
 
 It is very likely that Anaconda's root environment already delivers all
 required packages.
-If not, creating and activating a dedicated environment `my_dsp` might be useful:
+If not, creating and activating a dedicated environment `mydsp` might be useful:
 
-- get at least python 3.7x, numpy, scipy, matplotlib, notebook, ipykernel, the
+- get at least python 3.8x, numpy, scipy, matplotlib, notebook, ipykernel, the
 other packages are very useful tools
 
-`conda create -n my_dsp python=3.7 pip numpy scipy matplotlib notebook jupyterlab pydocstyle pycodestyle autopep8 ipykernel nb_conda jupyter_nbextensions_configurator jupyter_contrib_nbextensions`
+`conda create -n mydsp python=3.8 pip numpy scipy matplotlib notebook jupyterlab pydocstyle pycodestyle autopep8 ipykernel nb_conda jupyter_nbextensions_configurator jupyter_contrib_nbextensions`
 
 - activate this environment
 
-`conda activate my_dsp`
+`conda activate mydsp`
 
 - Jupyter notebook needs to know that we want to use the new environment
 
-`python -m ipykernel install --user --name my_dsp --display-name "my_dsp"`
+`python -m ipykernel install --user --name mydsp --display-name "mydsp"`
 
 - get into the folder where the DSP exercises are located
 
@@ -53,11 +53,17 @@ other packages are very useful tools
 
 - start a Jupyter notebook local server instance
 
-`jupyter notebook`
+`jupyter notebook` or `jupyter lab`
 
-- Change Kernel in the Jupyter Notebook GUI to my_dsp
+- Change Kernel in the Jupyter Notebook GUI to mydsp
 
 - Have fun with the playgrounds
+
+If the above steps lead to problems, here is the currently used environment to maintain the notebooks
+using
+- `conda 4.9.2`
+- `conda create -n mydsp python=3.8.6 pip=20.2.4 numpy=1.19.4 scipy=1.5.3 matplotlib=3.3.3 jupyter=1.0.0 notebook=6.1.5 jupyterlab=2.2.9 pydocstyle=5.1.1 pycodestyle=2.6.0 autopep8=1.5.4 flake8=3.8.4 ipykernel=5.3.4 nb_conda=2.2.1 jupyter_nbextensions_configurator=0.4.1 jupyter_contrib_nbextensions=0.5.1`
+- `pip install soundfile`
 
 ## License
 

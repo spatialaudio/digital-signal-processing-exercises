@@ -3,6 +3,9 @@
 dft/SlepianWindow
 .idea
 dft/matplotlibrc
+dft/fourier_matrix.png
+
+*cpython-37.pyc
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
