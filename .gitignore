@@ -6,6 +6,7 @@ dft/matplotlibrc
 dft/fourier_matrix.png
 
 *cpython-37.pyc
+*cpython-38.pyc
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
