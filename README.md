@@ -1,7 +1,6 @@
 digital-signal-processing-exercises
 
-The project is currently under heavy development while adding new material for
-the winter term 2020/21.
+The project is currently maintained for the winter term 2021/22.
 
 # Exercises for a Master's Course on Digital Signal Processing
 
@@ -20,49 +19,40 @@ The Jupyter notebooks are accessible in various ways
 - Local for interactive usage on the user's computer by cloning / downloading the repository from
 https://github.com/spatialaudio/digital-signal-processing-exercises
 
-Note: We use the [output branch](https://github.com/spatialaudio/digital-signal-processing-exercises/tree/outputs) merely to have convenient way of rendered results and
-plots for static web pages, whereas the [master branch](https://github.com/spatialaudio/digital-signal-processing-exercises) contains no outputs
-for convenient diff debugging. Thus, output branch is derived from a current
-appropriate master version and will be changed hard from time to time.
+Note: We use the [output branch](https://github.com/spatialaudio/digital-signal-processing-exercises/tree/outputs) merely for convenience showing rendered results and plots on static web pages, whereas the [master branch](https://github.com/spatialaudio/digital-signal-processing-exercises) contains no outputs for convenient diff debugging. Thus, the **output branch** is derived from a current appropriate master version and will be **changed hard** from time to time.
 
 ## Python / Jupyter Environment
 
 The [Anaconda Python distribution](https://www.anaconda.com/products/individual)
-is a very convenient out of the box solution to install the required software.
+is a very convenient out of the box solution to install the required software on
+all major operating systems.
 
 It is very likely that Anaconda's root environment already delivers all
 required packages.
 If not, creating and activating a dedicated environment `mydsp` might be useful:
 
-- get at least python 3.8x, numpy, scipy, matplotlib, notebook, ipykernel, the
-other packages are very useful tools
+- get at least `python` version 3.8x, `numpy`, `scipy`, `matplotlib`, `notebook`, `ipykernel`
 
-`conda create -n mydsp python=3.8 pip numpy scipy matplotlib notebook jupyterlab pydocstyle pycodestyle autopep8 ipykernel nb_conda jupyter_nbextensions_configurator jupyter_contrib_nbextensions`
+- the other packages in the command below (that is to create the environment `mydsp` from terminal) are very useful tools
 
-- activate this environment
+- `conda create -n mydsp python=3.8 pip numpy sympy scipy matplotlib notebook ipykernel jupyterlab pydocstyle pycodestyle autopep8 flake8 nb_conda jupyter_nbextensions_configurator jupyter_contrib_nbextensions`
 
-`conda activate mydsp`
+- activate this environment by `conda activate mydsp`
 
-- Jupyter notebook needs to know that we want to use the new environment
+- Jupyter notebooks need to know that we want to use this new environment
 
 `python -m ipykernel install --user --name mydsp --display-name "mydsp"`
 
-- get into the folder where the DSP exercises are located
+- get into the folder where the DSP exercises are located `cd my_digital-signal-processing-exercises_folder`
 
-`cd my_digital-signal-processing-exercises_folder`
+- start a Jupyter notebook local server instance `jupyter notebook` or `jupyter lab`
 
-- start a Jupyter notebook local server instance
+- change kernel in the Jupyter Notebook GUI to `mydsp`
 
-`jupyter notebook` or `jupyter lab`
+- have fun with the playgrounds and start programming stuff by yourself
 
-- Change Kernel in the Jupyter Notebook GUI to mydsp
-
-- Have fun with the playgrounds
-
-If the above steps lead to problems, here is the currently used environment to maintain the notebooks
-using
-- `conda 4.9.2`
-- `conda create -n mydsp python=3.8.6 pip=20.2.4 numpy=1.19.4 scipy=1.5.3 matplotlib=3.3.3 jupyter=1.0.0 notebook=6.1.5 jupyterlab=2.2.9 pydocstyle=5.1.1 pycodestyle=2.6.0 autopep8=1.5.4 flake8=3.8.4 ipykernel=5.3.4 nb_conda=2.2.1 jupyter_nbextensions_configurator=0.4.1 jupyter_contrib_nbextensions=0.5.1`
+If the above steps lead to problems, the currently used exact environment to maintain the notebooks was created under `conda 4.10.3` and `conda-build 3.21.4` by the commands
+- `conda create -n mydsp python=3.8.12 pip=21.2.4 numpy=1.21.2 sympy=1.8 scipy=1.7.1 matplotlib=3.4.3 notebook=6.4.4 ipykernel=6.4.1 jupyterlab=3.1.14 pydocstyle=6.1.1 pycodestyle=2.7.0 autopep8=1.5.7 flake8=3.9.2 nb_conda=2.2.1 jupyter_nbextensions_configurator=0.4.1 jupyter_contrib_nbextensions=0.5.1`
 - `pip install soundfile`
 
 ## License
