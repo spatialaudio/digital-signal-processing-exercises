@@ -256,7 +256,7 @@ understanding of the DFT.
 
 \subsubsection{Roots on the Unit Circle}
 
-The DFT of length $N$ is an excellent example uisng a special
+The DFT of length $N$ is an excellent example using a special
 base of orthogonal vectors whose entries are set up from the roots of the $z^N=1$
 equation, i.e. equiangularly distributed locations along the unit circle
 within the complex $z$-plane, cf. Fig.~\ref{fig:DFT_UnitCircle}.
@@ -380,12 +380,11 @@ $(W_N)^{k\cdot \mu} = (\e^{+\im\frac{2\pi}{N}})^{k\cdot \mu} = \e^{+\im\frac{2\p
 %
 \subsubsection{Fourier Matrix}
 %
-That is why matrix $\bm{K}$ was built before: by using element-wise operation
+That is why matrix $\bm{K}$ was built before: by using element-wise operator $\odot$
 %
 \begin{equation}
 \mathbf{W} =
-(\e^{+\im\frac{2\pi}{N}})^\mathbf{K} =
-\e^{+\im\frac{2\pi}{N} \mathbf{K}}
+\e^{+\im\frac{2\pi}{N} \odot \mathbf{K}}
 \end{equation}
 %
 the so called
@@ -1776,7 +1775,7 @@ The amplitude error between best and worst case for large $N$ is
 which is smaller than the error for the rectangular window.
 %
 This discloses the following general rule: The broader the main lobe of a window,
-the smaller the amplitude error in spectal analysis for a harmonic signal with
+the smaller the amplitude error in spectral analysis for a harmonic signal with
 the frequency
 %
 \begin{equation}
