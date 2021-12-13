@@ -88,7 +88,8 @@ Discrete-Time Signals} with the github URL.
 \textbf{Digital Signal Processing Tutorial 1 \& 2, Winter Semester 2020/21}
 (Course \#24505)\\
 authors: Frank Schultz (concept, initial draft, OER version),
-Vera Erbes (proof read, validation, translation from German to English)\\
+Vera Erbes (proof read, validation, translation from German to English), https://github.com/robhau
+(Matlab to Python porting for graphics code)\\
 Feel free to contact frank.schultz@uni-rostock.de
 
 %------------------------------------------------------------------------------
@@ -444,9 +445,9 @@ second DFT harmonic $x[k|\mu=2]=\e^{+\im \frac{2\pi}{N} k \cdot 2}$,
 i.e. two signal periods fit exactly into $N$ samples, cf.
 Fig.~\ref{fig:dft_eigensignals_columns} bottom.
 %
-\begin{figure}[t] 
+\begin{figure}[t]
 		\centering
-		\includegraphics[width=0.75\textwidth]{graphics/dft_eigensignals_columns.pdf}
+		\includegraphics[width=6in, height=4in]{graphics/dft_eigensignals_columns.pdf}
 		\caption{For the $N=16$ DFT, the complex-valued signals
     $\e^{+ \im \frac{2\pi}{N} k \cdot\mu}$ are shown for $\mu=1$ (top) and for
     $\mu=2$ (bottom).
@@ -815,21 +816,21 @@ technological progress over the last decades.
 
 \begin{figure}[b!]
 		\centering
-		\includegraphics[]{graphics/TwiddleFactorMatrix_N8.pdf}
+		\includegraphics[width=6in, height=4in]{graphics/TwiddleFactorMatrix_N8.pdf}
 		\caption{$\text{arg}(W_N^{\mu k})$ (left) and $|\text{arg}(W_N^{\mu k})|$
 		(right) as matrix over $\mu$ and $k$ for $N=8$.}
 		\label{Twiddle1}
 \end{figure}
 \begin{figure}[t]
 		\centering
-		\includegraphics[]{graphics/TwiddleFactorMatrix_N9.pdf}
+		\includegraphics[width=6in, height=4in]{graphics/TwiddleFactorMatrix_N9.pdf}
 		\caption{$\text{arg}(W_N^{\mu k})$ (left) and $|\text{arg}(W_N^{\mu k}|$
 		(right) as matrix over $\mu$ and $k$ for $N=9$.}
 		\label{Twiddle2}
 \end{figure}
 \begin{figure}
 		\centering
-		\includegraphics[]{graphics/TwiddleFactorMatrix_N48.pdf}
+		\includegraphics[width=6in, height=4in]{graphics/TwiddleFactorMatrix_N48.pdf}
 		\caption{$\text{arg}(W_N^{\mu k})$ (left) and $|\text{arg}(W_N^{\mu k})|$
 		(right) as matrix over $\mu$ and $k$ for $N=48$.}
 		\label{Twiddle3}
@@ -906,7 +907,7 @@ the signal $x[k]$ for $0\leq k\leq N-1$.
 Thus, both signals $x[k]$ and $X[\mu]$ inherently exhibit periodicity with $N$.
 \begin{figure}[b!]
 		\centering
-		\includegraphics[width=12cm]{graphics/Periodicity_DFT.pdf}
+		\includegraphics[width=6in, height=4in]{graphics/Periodicity_DFT.pdf}
 		\caption{Periodicity of the DFT for a real signal with $N=8$,
 		blue: baseband, black: periodic repetitions.}
 		\label{Periodicity_DFT}
@@ -963,7 +964,7 @@ using $M\in\mathbb{Z}$, cf.~Fig.~\ref{Symmetry_DFT_N8} and Fig.~\ref{Symmetry_DF
 %
 \begin{figure}
 		\centering
-		\includegraphics[]{graphics/Symmetry_DFT_N8.pdf}
+		\includegraphics[width=6in, height=4in]{graphics/Symmetry_DFT_N8.pdf}
 		\caption{Symmetry of the DFT for $x[k]\in\mathbb{R}$ with $N=8$.
 		Point and axis for symmetry is at $\frac{N}{2}=4$.
 		Left: real part and magnitude of $X[\mu]$ are axisymmetric,
@@ -972,7 +973,7 @@ using $M\in\mathbb{Z}$, cf.~Fig.~\ref{Symmetry_DFT_N8} and Fig.~\ref{Symmetry_DF
 \end{figure}
 \begin{figure}
 		\centering
-		\includegraphics[]{graphics/Symmetry_DFT_N9.pdf}
+		\includegraphics[width=6in, height=4in]{graphics/Symmetry_DFT_N9.pdf}
 		\caption{Symmetry of the DFT for $x[k]\in\mathbb{R}$ with $N=9$.
 		Point and axis for symmetry is at $\frac{N}{2}=4.5$, i.e. between two DFT bins.
 		Left: real part and magnitude of $X[\mu]$ are axisymmetric,
@@ -1038,14 +1039,14 @@ cf.~Fig.~\ref{DFT_Eigenfrequenzen_N4_N5}, Fig.~\ref{DFT_Eigenfrequenzen_N8_N9}.
 %
 \begin{figure}
 		\centering
-		\includegraphics[]{graphics/DFT_Eigenfrequencies_N4_N5.pdf}
+		\includegraphics[width=7in, height=4in]{graphics/DFT_Eigenfrequencies_N4_N5.pdf}
 		\caption{DFT eigenfrequency locations on the unit circle for $N=4$ (left),
 		$N=5$ (right).}
 		\label{DFT_Eigenfrequenzen_N4_N5}
 \end{figure}
 \begin{figure}
 		\centering
-		\includegraphics[]{graphics/DFT_Eigenfrequencies_N8_N9.pdf}
+		\includegraphics[width=7in, height=4in]{graphics/DFT_Eigenfrequencies_N8_N9.pdf}
 		\caption{DFT eigenfrequency locations on the unit circle for $N=8$ (left),
 		$N=9$ (right).}
 		\label{DFT_Eigenfrequenzen_N8_N9}
@@ -1135,7 +1136,7 @@ cf. Fig.~\ref{DTFT_Interpolation}.
 %
 \begin{figure}
 		\centering
-		\includegraphics[]{graphics/DTFT_Interpolation.pdf}
+		\includegraphics[width=6in, height=6in]{graphics/DTFT_Interpolation.pdf}
 		\caption{DFT (stem, blue) and interpolated DTFT (line, red) magnitude
 		spectra over $\mu$ (top), $\Omega/\pi$ (middle) and $\frac{f}{f_s}$ (bottom)
 		for $N=8$ (left) and $N=9$ (right).}
@@ -1389,28 +1390,28 @@ symmetric in $\Omega=0$, i.e. plotted over $-\pi\leq\Omega<\pi$.
 %
 \begin{figure}
 		\centering
-		\includegraphics[]{graphics/RectWindow_DTFT_DFT_lin_asym.pdf}
+		\includegraphics[width=6in, height=2.5in]{graphics/RectWindow_DTFT_DFT_lin_asym.pdf}
 		\caption{Magnitude of DTFT \& DFT spectra for rectangular windows of length
 		$N$, $0\leq\Omega<2\pi$.}
 		\label{RectWindow_DTFT_DFT_lin_asym}
 \end{figure}
 \begin{figure}
 		\centering
-		\includegraphics[]{graphics/RectWindow_DTFT_DFT_lin_sym.pdf}
+		\includegraphics[width=6in, height=2.5in]{graphics/RectWindow_DTFT_DFT_lin_sym.pdf}
 		\caption{Magnitude of DTFT \& DFT spectra for rectangular windows of length
 		$N$, $-\pi\leq\Omega<\pi$.}
 		\label{RectWindow_DTFT_DFT_lin_sym}
 \end{figure}
 \begin{figure}
 		\centering
-		\includegraphics[]{graphics/RectWindow_DTFT_DFT_log_asym.pdf}
+		\includegraphics[width=6in, height=2.5in]{graphics/RectWindow_DTFT_DFT_log_asym.pdf}
 		\caption{Level of DTFT spectra for rectangular windows of length $N$,
 		$0\leq\Omega<2\pi$.}
 		\label{RectWindow_DTFT_log_asym}
 \end{figure}
 \begin{figure}
 		\centering
-		\includegraphics[]{graphics/RectWindow_DTFT_DFT_log_sym.pdf}
+		\includegraphics[width=6in, height=2.5in]{graphics/RectWindow_DTFT_DFT_log_sym.pdf}
 		\caption{Level of DTFT spectra for rectangular windows of length $N$,
 		$-\pi\leq\Omega<\pi$.}
 		\label{RectWindow_DTFT_log_sym}
@@ -1501,7 +1502,7 @@ are not known (as is of course usually the case in real applications)?
 %
 \begin{figure}
 		\centering
-		\includegraphics[]{graphics/DFTbestworstcase_RectWin.pdf}
+		\includegraphics[width=6in, height=4in]{graphics/DFTbestworstcase_RectWin.pdf}
 		\caption{Rectangular windowing for $N=8$,
 		best case ($\mu=2$), worst case ($\mu=2-\frac{1}{2}$).}
 		\label{DFTbestworstcase_RectWin}
@@ -1565,7 +1566,7 @@ window.
 \subsubsection{Hann Window}
 \begin{figure}
 		\centering
-		\includegraphics[]{graphics/HannDefinitionen.pdf}
+		\includegraphics[width=6in, height=3.5in]{graphics/HannDefinitionen.pdf}
 		\caption{Different definitions of the Hann window.}
 		\label{HannDefinitionen}
 \end{figure}
@@ -1732,25 +1733,25 @@ way, which leads to a broader main lobe compared to the rectangular window.
 
 \begin{figure}
 		\centering
-		\includegraphics[]{graphics/Hann_from_RectWindow.pdf}
+		\includegraphics[width=6in, height=3.5in]{graphics/Hann_from_RectWindow.pdf}
 		\caption{Spectrum of Hann window from superposition of weighted rectangular windows.}
 		\label{HanningausRectWindow}
 \end{figure}
 \begin{figure}
 		\centering
-		\includegraphics[]{graphics/DTFTHannWin_lin.pdf}
+		\includegraphics[width=6in, height=3.5in]{graphics/DTFTHannWin_lin.pdf}
 		\caption{Magnitude of DTFT spectra for rectangular and Hann window, $-\pi\leq\Omega<\pi$.}
 		\label{DTFTHanningWin_lin}
 \end{figure}
 \begin{figure}
 		\centering
-		\includegraphics[]{graphics/DTFTHannWin_log.pdf}
+		\includegraphics[width=6in, height=3.5in]{graphics/DTFTHannWin_log.pdf}
 		\caption{Level of DTFT spectra for rectangular and Hann window, $-\pi\leq\Omega<\pi$.}
 		\label{DTFTHanningWin_log}
 \end{figure}
 \begin{figure}
 		\centering
-		\includegraphics[]{graphics/DFTbestworstcase_HannWin.pdf}
+		\includegraphics[width=6in, height=4in]{graphics/DFTbestworstcase_HannWin.pdf}
 		\caption{Hann windowing for $N=8$, best case ($\mu=2$), worst case ($\mu=2-\frac{1}{2}$).}
 		\label{DFTbestworstcase_HannWin}
 \end{figure}
@@ -1919,27 +1920,27 @@ amplitude error in the worst case is larger.
 It is approx.~$-1.78$~dB and is termed "scalloping loss" in \cite{Harris1978}.
 \begin{figure}
 		\centering
-		\includegraphics[]{graphics/Hamming_from_RectWindow.pdf}
+		\includegraphics[width=6in, height=3.5in]{graphics/Hamming_from_RectWindow.pdf}
 		\caption{Spectrum of Hamming window from superposition of weighted
 		rectangular windows.}
 		\label{HammingausRectWindow}
 \end{figure}
 \begin{figure}
 		\centering
-		\includegraphics[]{graphics/DTFTHammingWin_log.pdf}
+		\includegraphics[width=6in, height=3.5in]{graphics/DTFTHammingWin_log.pdf}
 		\caption{Level of DTFT spectra for rectangular and Hamming window.}
 		\label{DTFTHammingWin_log}
 \end{figure}
 \begin{figure}
 		\centering
-		\includegraphics[]{graphics/DTFTRectHanningHammingWin_log.pdf}
+		\includegraphics[width=6in, height=3.5in]{graphics/DTFTRectHanningHammingWin_log.pdf}
 		\caption{Level of DTFT spectra for rectangular, Hann and Hamming
 		window.}
 		\label{DTFTRectHanningHammingWin_log}
 \end{figure}
 \begin{figure}
 		\centering
-		\includegraphics[]{graphics/DFTbestworstcase_HammWin.pdf}
+		\includegraphics[width=6in, height=4in]{graphics/DFTbestworstcase_HammWin.pdf}
 		\caption{Hamming windowing for $N=8$, best case ($\mu=2$),
 		worst case ($\mu=2-\frac{1}{2}$).}
 		\label{DFTbestworstcase_HammWin}
@@ -2077,7 +2078,7 @@ Jupyter Notebook: \texttt{dft\_windowing\_tutorial\_exercises.ipynb}
 	\end{equation}
 	\item \text{}
 	\begin{center}%
-		\includegraphics[width=10cm]{graphics/UE1_Exercise2_IDFT.pdf}%
+		\includegraphics[width=6in, height=3.5in]{graphics/UE1_Exercise2_IDFT.pdf}%
 		\captionof{figure}{DFT of $x[k]$ for exercise 2 c).}%
 	\end{center}%
 	\item
@@ -2356,7 +2357,7 @@ The DFT and DTFT spectrum correspond to the transfer function of the system.
 	\end{align}
 	\item \text{}
 	\begin{center}%
-		\includegraphics[]{graphics/UE1_Exercise4_Spectrum.pdf}%
+		\includegraphics[width=6in, height=3.5in]{graphics/UE1_Exercise4_Spectrum.pdf}%
 		\captionof{figure}{DFT (blue dots) and DTFT (red line) spectrum for $h[k]$}%
 	\end{center}%
 	\underline{sampling frequency:} $\Delta f=\frac{f_s}{N}\,\,\Leftrightarrow\,\,f_s=\Delta f\cdot N=500\,\text{Hz}\cdot4=2000\,\text{Hz}$\\\\
