@@ -31,7 +31,7 @@ https://github.com/spatialaudio/digital-signal-processing-exercises
 
 The [Anaconda distribution](https://www.anaconda.com/distribution/) is a convenient solution to install a required environment, i.e. to have access to the Jupyter Notebook renderer with a Python interpreter on a personal computer. It is very likely that a very recent installation of Anaconda already delivers all required packages just using the `base` environment. It is however good practice to create a dedicated environment for each project. So, for this tutorial we might use a `mydsp` (or whatever name works for us) environment.
 
-- get into the folder where the exercises are located, e.g. `cd my_ddasp_folder`
+- get into the folder where the exercises are located, e.g. `cd my_dsp_folder`
 - in the subfolder `.binder` the `environment.yml` can be used to create a dedicated conda `mydsp` environment as
     - `conda env create -f environment.yml --force`
     - we can remove this environment with `conda env remove --name mydsp`
