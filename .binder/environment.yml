@@ -20,7 +20,7 @@ dependencies:
   - jupyter_nbextensions_configurator
   - jupyter_contrib_nbextensions
   - pip:
-    - soundfile==0.10.3.post1
+    - soundfile==0.11
 # conda env create -f environment.yml  --force
 # pip manually?!
 # python -m ipykernel install --user --name myddsp --display-name "mydsp"
