@@ -1,59 +1,72 @@
-digital-signal-processing-exercises
+# digital-signal-processing-exercises
 
-The project is currently maintained for the winter term 2021/22.
+**Exercises for a Master's Course on Digital Signal Processing**
 
-# Exercises for a Master's Course on Digital Signal Processing
+These exercises accompany the lecture [Digital Signal Processing](https://github.com/spatialaudio/digital-signal-processing-lecture)
 
-These exercises accompany the lecture
+The lecture and the tutorial are designed for International Standard Classification of Education (ISCED) level 7 (Master, 1 SWS).
+The project is currently maintained for the winter term 2022/23.
 
-https://github.com/spatialaudio/digital-signal-processing-lecture
+Jupyter notebooks can be accessed via the services
 
-
-## Getting Started
-
-The Jupyter notebooks are accessible in various ways
-
-- Online as [static web pages](https://nbviewer.jupyter.org/github/spatialaudio/digital-signal-processing-exercises/blob/outputs/index.ipynb) hosted with help of https://nbviewer.jupyter.org
-- Online as [static web pages](https://github.com/spatialaudio/digital-signal-processing-exercises/blob/outputs/index.ipynb) directly in the github preview
-- Online for [interactive usage](https://mybinder.org/v2/gh/spatialaudio/digital-signal-processing-exercises/master) hosted with help of https://mybinder.org
+- Online as [static web pages](https://nbviewer.jupyter.org/github/spatialaudio/digital-signal-processing-exercises/blob/main/index.ipynb) hosted with help of https://nbviewer.jupyter.org
+- Online as [static web pages](https://github.com/spatialaudio/digital-signal-processing-exercises/blob/main/index.ipynb) directly in the github preview
+- Online for [interactive usage](https://mybinder.org/v2/gh/spatialaudio/digital-signal-processing-exercises/dev) hosted with help of https://mybinder.org
 - Local for interactive usage on the user's computer by cloning / downloading the repository from
 https://github.com/spatialaudio/digital-signal-processing-exercises
 
-Note: We use the [output branch](https://github.com/spatialaudio/digital-signal-processing-exercises/tree/outputs) merely for convenience showing rendered results and plots on static web pages, whereas the [master branch](https://github.com/spatialaudio/digital-signal-processing-exercises) contains no outputs for convenient diff debugging. Thus, the **output branch** is derived from a current appropriate master version and will be **changed hard** from time to time.
 
-## Python / Jupyter Environment
+## Versions / Tags
+- [v0.1](https://github.com/spatialaudio/digital-signal-processing-exercises/releases/tag/v0.1) for winter term 2021/22
+- TBD for winter term 2022/23 
 
-The [Anaconda Python distribution](https://www.anaconda.com/products/individual)
-is a very convenient out of the box solution to install the required software on
-all major operating systems.
+## Branch Conventions
 
-It is very likely that Anaconda's root environment already delivers all
-required packages.
-If not, creating and activating a dedicated environment `mydsp` might be useful:
+- we use the `dev` branch as the developing branch, i.e. all notebook outputs are cleared for convenient diff handling
+- we use the `main` branch as presentation branch, i.e. notebook outputs (such as plots, results) are included for students' convenience
+- note that we **hard reset** `main` branch from time to time in order to represent an actual desired state of the material
+- so please do not rely on `main` related commits, but rather act on the `dev` commits, where git history is not changed
 
-- get at least `python` version 3.8x, `numpy`, `scipy`, `matplotlib`, `notebook`, `ipykernel`
+## Anaconda Environment for Local Usage
 
-- the other packages in the command below (that is to create the environment `mydsp` from terminal) are very useful tools
+The [Anaconda distribution](https://www.anaconda.com/distribution/) is a convenient solution to install a required environment, i.e. to have access to the Jupyter Notebook renderer with a Python interpreter on a personal computer. It is very likely that a very recent installation of Anaconda already delivers all required packages just using the `base` environment. It is however good practice to create a dedicated environment for each project. So, for this tutorial we might use a `mydsp` (or whatever name works for us) environment.
 
-- `conda create -n mydsp python=3.8 pip numpy sympy scipy matplotlib notebook ipykernel jupyterlab pydocstyle pycodestyle autopep8 flake8 nb_conda jupyter_nbextensions_configurator jupyter_contrib_nbextensions`
-
-- activate this environment by `conda activate mydsp`
-
-- Jupyter notebooks need to know that we want to use this new environment
-
+- get into the folder where the exercises are located, e.g. `cd my_ddasp_folder`
+- in the subfolder `.binder` the `environment.yml` can be used to create a dedicated conda `mydsp` environment as
+    - `conda env create -f environment.yml --force`
+    - we can remove this environment with `conda env remove --name mydsp`
+- this should also have installed audio related libraries using pip
+    - `pip install soundfile==0.10.3.post1`
+    - we might check this with `pip list`
+- activate this environment with `conda activate mydsp`
+- Jupyter notebook renderer needs to know our dedicated environment:
 `python -m ipykernel install --user --name mydsp --display-name "mydsp"`
+- we might want to archive the actually installed package versions by
+    - `python -m pip list > detailed_packages_list_pip.txt` and
+    - `conda env export --no-builds > detailed_packages_list_conda.txt`
+- start either a Jupyter notebook or Jupyter lab working environment via a local server instance by either `jupyter notebook` or `jupyter lab`
+- start the landing page `index.ipynb` of the tutorial
+- make sure that the notebooks we want to work with are using our dedicated kernel `mydsp`
 
-- get into the folder where the DSP exercises are located `cd my_digital-signal-processing-exercises_folder`
 
-- start a Jupyter notebook local server instance `jupyter notebook` or `jupyter lab`
+## Authorship
 
-- change kernel in the Jupyter Notebook GUI to `mydsp`
+- University of Rostock:
+    - [Frank Schultz](https://orcid.org/0000-0002-3010-0294)
+    - [Jacob Thönes](https://github.com/JacobTh98)
+    - [Robert Hauser](https://github.com/robhau)
+    - [Sascha Spors](https://orcid.org/0000-0001-7225-9992)
 
-- have fun with the playgrounds and start programming stuff by yourself
+## Referencing
 
-If the above steps lead to problems, the currently used exact environment to maintain the notebooks was created under `conda 4.10.3` and `conda-build 3.21.4` by the commands
-- `conda create -n mydsp python=3.8.12 pip=21.2.4 numpy=1.21.2 sympy=1.8 scipy=1.7.1 matplotlib=3.4.3 notebook=6.4.4 ipykernel=6.4.1 jupyterlab=3.1.14 pydocstyle=6.1.1 pycodestyle=2.7.0 autopep8=1.5.7 flake8=3.9.2 nb_conda=2.2.1 jupyter_nbextensions_configurator=0.4.1 jupyter_contrib_nbextensions=0.5.1`
-- `pip install soundfile`
+Please cite this open educational resource (OER) project as
+*Frank Schultz, Digital Signal Processing - A Tutorial Featuring Computational Examples* ideally with relevant ``file(s), github URL, commit number and/or version tag, year``.
+
+## License
+
+- Creative Commons Attribution 4.0 International License (CC BY 4.0) for text/graphics
+- MIT License for software
+
 
 ## License
 

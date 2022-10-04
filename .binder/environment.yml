@@ -1,0 +1,26 @@
+name: mydsp
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python
+  - pip
+  - flake8
+  - pydocstyle
+  - pycodestyle
+  - numpy
+  - sympy
+  - scipy
+  - matplotlib
+  - ipykernel
+  - jupyterlab
+  - ipympl
+  - nb_conda
+  - autopep8
+  - jupyter_nbextensions_configurator
+  - jupyter_contrib_nbextensions
+  - pip:
+    - soundfile==0.10.3.post1
+# conda env create -f environment.yml  --force
+# pip manually?!
+# python -m ipykernel install --user --name myddsp --display-name "mydsp"

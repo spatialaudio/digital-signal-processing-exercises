@@ -251,3 +251,6 @@ TSWLatexianTemp*
 
 # generated if using elsarticle.cls
 *.spl
+
+.binder/detailed_packages_list_conda.txt
+.binder/detailed_packages_list_pip.txt
