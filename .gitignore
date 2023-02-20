@@ -254,3 +254,6 @@ TSWLatexianTemp*
 
 .binder/detailed_packages_list_conda.txt
 .binder/detailed_packages_list_pip.txt
+
+# temporary ignore for Homework FFT, STFT
+spectral_estimation/*
