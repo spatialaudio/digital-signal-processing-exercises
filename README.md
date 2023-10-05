@@ -5,7 +5,7 @@
 These exercises accompany the lecture [Digital Signal Processing](https://github.com/spatialaudio/digital-signal-processing-lecture)
 
 The lecture and the tutorial are designed for International Standard Classification of Education (ISCED) level 7 (Master, 1 SWS).
-The project is currently maintained for the winter term 2022/23.
+The project is currently maintained for the winter term 2023/24.
 
 Jupyter notebooks can be accessed via the services
 
