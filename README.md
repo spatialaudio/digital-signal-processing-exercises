@@ -17,8 +17,9 @@ https://github.com/spatialaudio/digital-signal-processing-exercises
 
 
 ## Versions / Tags
-- [v0.1](https://github.com/spatialaudio/digital-signal-processing-exercises/releases/tag/v0.1) for winter term 2021/22
+- Winter term 2023/24
 - TBD for winter term 2022/23 
+- [v0.1](https://github.com/spatialaudio/digital-signal-processing-exercises/releases/tag/v0.1) for winter term 2021/22
 
 ## Branch Conventions
 
