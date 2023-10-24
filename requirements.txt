@@ -1,0 +1,6 @@
+numpy
+sympy
+scipy
+matplotlib
+ipykernel
+soundfile
