@@ -3,10 +3,10 @@ name: Linting Notebooks with Black
 on:
   push:
     branches:
-      - ci  # Change this to your repository's main branch
+      - dev  # Change this to your repository's main branch
   pull_request:
     branches:
-      - ci  
+      - dev  
 jobs:
   lint:
     runs-on: ubuntu-latest
