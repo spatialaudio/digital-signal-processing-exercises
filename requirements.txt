@@ -4,3 +4,5 @@ scipy
 matplotlib
 ipykernel
 soundfile
+librosa
+sounddevice
