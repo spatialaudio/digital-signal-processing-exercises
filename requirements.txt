@@ -1,1 +1,12 @@
-../requirements.txt
+matplotlib
+numpy
+sympy
+scipy
+librosa
+soundfile
+ipympl
+scikit-learn
+tensorflow
+keras-tuner
+statsmodels
+pyloudnorm
