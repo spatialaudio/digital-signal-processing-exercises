@@ -1,0 +1,4 @@
+set -ex
+
+# disable announcements in jupyterlab
+jupyter labextension disable "@jupyterlab/apputils-extension:announcements"
