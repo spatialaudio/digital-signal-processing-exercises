@@ -1,1 +1,8 @@
-../requirements.txt
+numpy
+sympy
+scipy
+matplotlib
+ipykernel
+soundfile
+librosa
+sounddevice
