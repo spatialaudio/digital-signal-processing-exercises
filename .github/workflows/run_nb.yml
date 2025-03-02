@@ -1,6 +1,7 @@
 name: Run Notebooks
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - dev  # Change this to your repository's main branch
@@ -32,7 +33,7 @@ jobs:
 
     - name: Install dependencies
       run: pip install jupyter nbconvert
-    - run: pip install -r requirements.txt   
+    - run: pip install -r requirements.txt
 
     - name: Find notebooks
       id: find-notebooks
