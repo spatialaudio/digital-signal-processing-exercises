@@ -1,12 +1,13 @@
 name: Linting Notebooks with Black
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - dev  # Change this to your repository's main branch
   pull_request:
     branches:
-      - dev  
+      - dev
 jobs:
   lint:
     runs-on: ubuntu-latest
